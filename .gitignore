@@ -1,21 +1,21 @@
 ## gradle
-/.gradle
-/build
+.gradle/
+build/
 
 ## ForgeGradle
-/run
+run/
 
 ## eclipse
-/.settings
-/.metadata
-/.classpath
-/.project
-/bin
+.settings/
+.metadata/
+.classpath/
+.project/
+bin/
 *.launch
 
 ## intellij
-/out
-/.idea
-/*.iml
-/*.ipr
-/*.iws
+out/
+.idea/
+*.iml
+*.ipr
+*.iws
