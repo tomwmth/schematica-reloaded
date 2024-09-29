@@ -38,7 +38,7 @@ public class MessageDownloadChunkAck implements IMessage, IMessageHandler<Messag
 
     @Override
     public IMessage onMessage(final MessageDownloadChunkAck message, final MessageContext ctx) {
-        final EntityPlayerMP player = ctx.getServerHandler().player;
+        final EntityPlayerMP player = ctx.getServerHandler().playerEntity;
         final SchematicTransfer transfer = DownloadHandler.INSTANCE.transferMap.get(player);
         if (transfer != null) {
             transfer.confirmChunk(message.baseX, message.baseY, message.baseZ);

@@ -3,7 +3,7 @@ package com.github.lunatrius.schematica.block.state;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Map;
 public class BlockStateHelper {
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public static <T extends Comparable<T>> IProperty<T> getProperty(final IBlockState blockState, final String name) {
-        for (final IProperty prop : blockState.getPropertyKeys()) {
+        for (final IProperty prop : blockState.getPropertyNames()) {
             if (prop.getName().equals(name)) {
                 return prop;
             }
@@ -34,15 +34,15 @@ public class BlockStateHelper {
     public static List<String> getFormattedProperties(final IBlockState blockState) {
         final List<String> list = new ArrayList<String>();
 
-        for (final Map.Entry<IProperty<?>, Comparable<?>> entry : blockState.getProperties().entrySet()) {
+        for (final Map.Entry<IProperty, Comparable> entry : blockState.getProperties().entrySet()) {
             final IProperty key = entry.getKey();
             final Comparable value = entry.getValue();
 
             String formattedValue = value.toString();
             if (Boolean.TRUE.equals(value)) {
-                formattedValue = TextFormatting.GREEN + formattedValue + TextFormatting.RESET;
+                formattedValue = EnumChatFormatting.GREEN + formattedValue + EnumChatFormatting.RESET;
             } else if (Boolean.FALSE.equals(value)) {
-                formattedValue = TextFormatting.RED + formattedValue + TextFormatting.RESET;
+                formattedValue = EnumChatFormatting.RED + formattedValue + EnumChatFormatting.RESET;
             }
 
             list.add(key.getName() + ": " + formattedValue);

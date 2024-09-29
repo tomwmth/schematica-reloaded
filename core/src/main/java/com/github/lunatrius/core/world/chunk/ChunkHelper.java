@@ -1,6 +1,6 @@
 package com.github.lunatrius.core.world.chunk;
 
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockPos;
 
 import java.util.Random;
 

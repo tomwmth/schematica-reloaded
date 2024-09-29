@@ -1,11 +1,7 @@
 package com.github.lunatrius.core.util.math;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.*;
 
 public class MBlockPos extends BlockPos {
     public int x;
@@ -20,8 +16,8 @@ public class MBlockPos extends BlockPos {
         this(source.posX, source.posY, source.posZ);
     }
 
-    public MBlockPos(final Vec3d source) {
-        this(source.x, source.y, source.z);
+    public MBlockPos(final Vec3 source) {
+        this(source.xCoord, source.yCoord, source.zCoord);
     }
 
     public MBlockPos(final Vec3i source) {
@@ -29,7 +25,7 @@ public class MBlockPos extends BlockPos {
     }
 
     public MBlockPos(final double x, final double y, final double z) {
-        this(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
+        this(MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z));
     }
 
     public MBlockPos(final int x, final int y, final int z) {
@@ -43,8 +39,8 @@ public class MBlockPos extends BlockPos {
         return set(source.posX, source.posY, source.posZ);
     }
 
-    public MBlockPos set(final Vec3d source) {
-        return set(source.x, source.y, source.z);
+    public MBlockPos set(final Vec3 source) {
+        return set(source.xCoord, source.yCoord, source.zCoord);
     }
 
     public MBlockPos set(final Vec3i source) {
@@ -52,7 +48,7 @@ public class MBlockPos extends BlockPos {
     }
 
     public MBlockPos set(final double x, final double y, final double z) {
-        return set(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
+        return set(MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z));
     }
 
     public MBlockPos set(final int x, final int y, final int z) {
@@ -69,7 +65,7 @@ public class MBlockPos extends BlockPos {
 
     @Override
     public MBlockPos add(final double x, final double y, final double z) {
-        return add(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
+        return add(MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z));
     }
 
     @Override
@@ -87,7 +83,7 @@ public class MBlockPos extends BlockPos {
     }
 
     public MBlockPos subtract(final double x, final double y, final double z) {
-        return subtract(MathHelper.floor(x), MathHelper.floor(y), MathHelper.floor(z));
+        return subtract(MathHelper.floor_double(x), MathHelper.floor_double(y), MathHelper.floor_double(z));
     }
 
     public MBlockPos subtract(final int x, final int y, final int z) {
@@ -170,7 +166,7 @@ public class MBlockPos extends BlockPos {
     }
 
     @Override
-    public BlockPos toImmutable() {
+    public BlockPos getImmutable() {
         return new BlockPos(this);
     }
 

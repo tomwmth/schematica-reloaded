@@ -13,9 +13,9 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Map;
 
-@Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, guiFactory = Reference.GUI_FACTORY)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, guiFactory = Reference.GUI_FACTORY, useMetadata = true)
 public class Schematica {
-    @Mod.Instance(Reference.MODID)
+    @Mod.Instance(Reference.MOD_ID)
     public static Schematica instance;
 
     @SidedProxy(serverSide = Reference.PROXY_SERVER, clientSide = Reference.PROXY_CLIENT)

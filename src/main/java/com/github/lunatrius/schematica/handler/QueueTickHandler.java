@@ -6,7 +6,7 @@ import com.github.lunatrius.schematica.world.chunk.SchematicContainer;
 import com.github.lunatrius.schematica.world.schematic.SchematicFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -28,8 +28,8 @@ public class QueueTickHandler {
 
         // TODO: find a better way... maybe?
         try {
-            final EntityPlayerSP player = Minecraft.getMinecraft().player;
-            if (player != null && player.connection != null && !player.connection.getNetworkManager().isLocalChannel()) {
+            final EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+            if (player != null && player.sendQueue != null && !player.sendQueue.getNetworkManager().isLocalChannel()) {
                 processQueue();
             }
         } catch (final Exception e) {
@@ -47,7 +47,7 @@ public class QueueTickHandler {
     }
 
     private void processQueue() {
-        if (this.queue.size() == 0) {
+        if (this.queue.isEmpty()) {
             return;
         }
 
@@ -58,8 +58,8 @@ public class QueueTickHandler {
 
         if (container.hasNext()) {
             if (container.isFirst()) {
-                final TextComponentTranslation component = new TextComponentTranslation(Names.Command.Save.Message.SAVE_STARTED, container.chunkCount, container.file.getName());
-                container.player.sendMessage(component);
+                final ChatComponentTranslation component = new ChatComponentTranslation(Names.Command.Save.Message.SAVE_STARTED, container.chunkCount, container.file.getName());
+                container.player.addChatMessage(component);
             }
 
             container.next();

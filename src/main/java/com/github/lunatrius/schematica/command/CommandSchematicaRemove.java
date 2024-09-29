@@ -6,38 +6,35 @@ import com.github.lunatrius.schematica.reference.Names;
 import com.github.lunatrius.schematica.reference.Reference;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
 import java.util.Arrays;
 
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class CommandSchematicaRemove extends CommandSchematicaBase {
     @Override
-    public String getName() {
+    public String getCommandName() {
         return Names.Command.Remove.NAME;
     }
 
     @Override
-    public String getUsage(final ICommandSender sender) {
+    public String getCommandUsage(final ICommandSender sender) {
         return Names.Command.Remove.Message.USAGE;
     }
 
     @Override
-    public void execute(final MinecraftServer server, final ICommandSender sender, final String[] args) throws CommandException {
+    public void processCommand(final ICommandSender sender, final String[] args) throws CommandException {
         if (args.length < 1) {
-            throw new WrongUsageException(getUsage(sender));
+            throw new WrongUsageException(getCommandUsage(sender));
         }
 
         if (!(sender instanceof EntityPlayer)) {
@@ -76,19 +73,19 @@ public class CommandSchematicaRemove extends CommandSchematicaBase {
         if (file.exists()) {
             if (delete) {
                 if (file.delete()) {
-                    sender.sendMessage(new TextComponentTranslation(Names.Command.Remove.Message.SCHEMATIC_REMOVED, name));
+                    sender.addChatMessage(new ChatComponentTranslation(Names.Command.Remove.Message.SCHEMATIC_REMOVED, name));
                 } else {
                     throw new CommandException(Names.Command.Remove.Message.SCHEMATIC_NOT_FOUND);
                 }
             } else {
                 final String hash = Hashing.md5().hashString(name, Charsets.UTF_8).toString();
                 final String confirmCommand = String.format("/%s %s %s", Names.Command.Remove.NAME, name, hash);
-                final ITextComponent chatComponent = new TextComponentTranslation(Names.Command.Remove.Message.ARE_YOU_SURE_START, name);
-                chatComponent.appendSibling(new TextComponentString(" ["));
-                chatComponent.appendSibling(withStyle(new TextComponentTranslation(Names.Command.Remove.Message.YES), TextFormatting.RED, confirmCommand));
-                chatComponent.appendSibling(new TextComponentString("]"));
+                final IChatComponent chatComponent = new ChatComponentTranslation(Names.Command.Remove.Message.ARE_YOU_SURE_START, name);
+                chatComponent.appendSibling(new ChatComponentText(" ["));
+                chatComponent.appendSibling(withStyle(new ChatComponentTranslation(Names.Command.Remove.Message.YES), EnumChatFormatting.RED, confirmCommand));
+                chatComponent.appendSibling(new ChatComponentText("]"));
 
-                sender.sendMessage(chatComponent);
+                sender.addChatMessage(chatComponent);
             }
         } else {
             throw new CommandException(Names.Command.Remove.Message.SCHEMATIC_NOT_FOUND);

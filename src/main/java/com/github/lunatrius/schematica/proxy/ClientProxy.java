@@ -20,8 +20,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Property;
@@ -52,7 +52,7 @@ public class ClientProxy extends CommonProxy {
     public static EnumFacing axisFlip = EnumFacing.UP;
     public static EnumFacing axisRotation = EnumFacing.UP;
 
-    public static RayTraceResult objectMouseOver = null;
+    public static MovingObjectPosition objectMouseOver = null;
 
     private static final Minecraft MINECRAFT = Minecraft.getMinecraft();
 
@@ -63,7 +63,7 @@ public class ClientProxy extends CommonProxy {
 
         orientation = getOrientation(player);
 
-        rotationRender = MathHelper.floor(player.rotationYaw / 90) & 3;
+        rotationRender = MathHelper.floor_float(player.rotationYaw / 90) & 3;
     }
 
     private static EnumFacing getOrientation(final EntityPlayer player) {
@@ -72,7 +72,7 @@ public class ClientProxy extends CommonProxy {
         } else if (player.rotationPitch < -45) {
             return EnumFacing.UP;
         } else {
-            switch (MathHelper.floor(player.rotationYaw / 90.0 + 0.5) & 3) {
+            switch (MathHelper.floor_float(player.rotationYaw / 90.0F + 0.5F) & 3) {
             case 0:
                 return EnumFacing.SOUTH;
             case 1:

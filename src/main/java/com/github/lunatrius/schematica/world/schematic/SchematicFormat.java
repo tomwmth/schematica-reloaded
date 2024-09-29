@@ -6,7 +6,7 @@ import com.github.lunatrius.schematica.reference.Names;
 import com.github.lunatrius.schematica.reference.Reference;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.io.DataOutputStream;
@@ -129,7 +129,7 @@ public abstract class SchematicFormat {
     public static void writeToFileAndNotify(final File file, @Nullable final String format, final ISchematic schematic, final EntityPlayer player) {
         final boolean success = writeToFile(file, format, schematic);
         final String message = success ? Names.Command.Save.Message.SAVE_SUCCESSFUL : Names.Command.Save.Message.SAVE_FAILED;
-        player.sendMessage(new TextComponentTranslation(message, file.getName()));
+        player.addChatMessage(new ChatComponentTranslation(message, file.getName()));
     }
 
     /**
@@ -170,7 +170,7 @@ public abstract class SchematicFormat {
         // TODO?
         // FORMATS.put(Names.NBT.FORMAT_CLASSIC, new SchematicClassic());
         FORMATS.put(Names.NBT.FORMAT_ALPHA, new SchematicAlpha());
-        FORMATS.put(Names.NBT.FORMAT_STRUCTURE, new SchematicStructure());
+        // FORMATS.put(Names.NBT.FORMAT_STRUCTURE, new SchematicStructure());
 
         FORMAT_DEFAULT = Names.NBT.FORMAT_ALPHA;
     }

@@ -8,7 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
+import net.minecraftforge.fml.common.registry.GameData;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,7 +19,8 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 public class Schematic implements ISchematic {
-    private static final ItemStack DEFAULT_ICON = new ItemStack(Blocks.GRASS);
+    public static final ItemStack DEFAULT_ICON = new ItemStack(Blocks.grass);
+    private static final FMLControlledNamespacedRegistry<Block> BLOCK_REGISTRY = GameData.getBlockRegistry();
 
     private ItemStack icon;
     private final short[][][] blocks;
@@ -52,13 +55,13 @@ public class Schematic implements ISchematic {
     @Override
     public IBlockState getBlockState(final BlockPos pos) {
         if (!isValid(pos)) {
-            return Blocks.AIR.getDefaultState();
+            return Blocks.air.getDefaultState();
         }
 
         final int x = pos.getX();
         final int y = pos.getY();
         final int z = pos.getZ();
-        final Block block = Block.REGISTRY.getObjectById(this.blocks[x][y][z]);
+        final Block block = BLOCK_REGISTRY.getObjectById(this.blocks[x][y][z]);
 
         return block.getStateFromMeta(this.metadata[x][y][z]);
     }
@@ -70,7 +73,7 @@ public class Schematic implements ISchematic {
         }
 
         final Block block = blockState.getBlock();
-        final int id = Block.REGISTRY.getIDForObject(block);
+        final int id = BLOCK_REGISTRY.getIDForObject(block);
         if (id == -1) {
             return false;
         }

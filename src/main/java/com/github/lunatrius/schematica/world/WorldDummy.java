@@ -2,7 +2,6 @@ package com.github.lunatrius.schematica.world;
 
 import com.github.lunatrius.schematica.world.storage.SaveHandlerSchematic;
 import net.minecraft.profiler.Profiler;
-import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldSettings;
@@ -24,13 +23,18 @@ public class WorldDummy extends World {
     }
 
     @Override
+    protected int getRenderDistanceChunks() {
+        return 0;
+    }
+
+    @Override
     protected boolean isChunkLoaded(final int x, final int z, final boolean allowEmpty) {
         return false;
     }
 
     public static WorldDummy instance() {
         if (instance == null) {
-            final WorldSettings worldSettings = new WorldSettings(0, GameType.CREATIVE, false, false, WorldType.FLAT);
+            final WorldSettings worldSettings = new WorldSettings(0, WorldSettings.GameType.CREATIVE, false, false, WorldType.FLAT);
             final WorldInfo worldInfo = new WorldInfo(worldSettings, "FakeWorld");
             instance = new WorldDummy(new SaveHandlerSchematic(), worldInfo, new WorldProviderSchematic(), new Profiler(), false);
         }

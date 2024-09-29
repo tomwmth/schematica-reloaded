@@ -6,35 +6,32 @@ import com.github.lunatrius.schematica.reference.Constants;
 import com.github.lunatrius.schematica.reference.Names;
 import com.github.lunatrius.schematica.reference.Reference;
 import com.github.lunatrius.schematica.world.schematic.SchematicFormat;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.ChatComponentTranslation;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
 
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class CommandSchematicaSave extends CommandSchematicaBase {
     @Override
-    public String getName() {
+    public String getCommandName() {
         return Names.Command.Save.NAME;
     }
 
     @Override
-    public String getUsage(final ICommandSender sender) {
+    public String getCommandUsage(final ICommandSender sender) {
         return Names.Command.Save.Message.USAGE;
     }
 
     @Override
-    public void execute(final MinecraftServer server, final ICommandSender sender, final String[] args) throws CommandException {
+    public void processCommand(final ICommandSender sender, final String[] args) throws CommandException {
         if (args.length < 7) {
-            throw new WrongUsageException(getUsage(sender));
+            throw new WrongUsageException(getCommandUsage(sender));
         }
 
         if (!(sender instanceof EntityPlayer)) {
@@ -68,7 +65,7 @@ public class CommandSchematicaSave extends CommandSchematicaBase {
             }
             filename = name + SchematicFormat.getExtension(format);
         } catch (final NumberFormatException exception) {
-            throw new WrongUsageException(getUsage(sender));
+            throw new WrongUsageException(getCommandUsage(sender));
         }
 
         Reference.logger.debug("Saving schematic from {} to {} to {}", from, to, filename);
@@ -88,7 +85,7 @@ public class CommandSchematicaSave extends CommandSchematicaBase {
 
         try {
             Schematica.proxy.saveSchematic(player, schematicDirectory, filename, player.getEntityWorld(), format, from, to);
-            sender.sendMessage(new TextComponentTranslation(Names.Command.Save.Message.SAVE_SUCCESSFUL, name));
+            sender.addChatMessage(new ChatComponentTranslation(Names.Command.Save.Message.SAVE_SUCCESSFUL, name));
         } catch (final Exception e) {
             throw new CommandException(Names.Command.Save.Message.SAVE_FAILED, name);
         }

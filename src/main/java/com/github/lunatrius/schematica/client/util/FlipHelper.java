@@ -14,14 +14,18 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.Vec3i;
+import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
+import net.minecraftforge.fml.common.registry.GameData;
 
 import java.util.List;
 
 public class FlipHelper {
     public static final FlipHelper INSTANCE = new FlipHelper();
+
+    private static final FMLControlledNamespacedRegistry<Block> BLOCK_REGISTRY = GameData.getBlockRegistry();
 
     public boolean flip(final SchematicWorld world, final EnumFacing axis, final boolean forced) {
         if (world == null) {
@@ -107,11 +111,11 @@ public class FlipHelper {
                 }
             }
         } else if (propertyFacing != null) {
-            Reference.logger.error("'{}': found 'facing' property with unknown type {}", Block.REGISTRY.getNameForObject(blockState.getBlock()), propertyFacing.getClass().getSimpleName());
+            Reference.logger.error("'{}': found 'facing' property with unknown type {}", BLOCK_REGISTRY.getNameForObject(blockState.getBlock()), propertyFacing.getClass().getSimpleName());
         }
 
         if (!forced && propertyFacing != null) {
-            throw new FlipException("'%s' cannot be flipped across '%s'", Block.REGISTRY.getNameForObject(blockState.getBlock()), axis);
+            throw new FlipException("'%s' cannot be flipped across '%s'", BLOCK_REGISTRY.getNameForObject(blockState.getBlock()), axis);
         }
 
         return blockState;

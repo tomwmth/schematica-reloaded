@@ -6,14 +6,17 @@ import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockStateMatcher;
+import net.minecraft.block.state.pattern.BlockStateHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
+import net.minecraftforge.fml.common.registry.GameData;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BlockStateReplacer {
+    private static final FMLControlledNamespacedRegistry<Block> BLOCK_REGISTRY = GameData.getBlockRegistry();
     private final IBlockState defaultReplacement;
 
     private BlockStateReplacer(final IBlockState defaultReplacement) {
@@ -47,8 +50,8 @@ public class BlockStateReplacer {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static BlockStateMatcher getMatcher(final BlockStateInfo blockStateInfo) {
-        final BlockStateMatcher matcher = BlockStateMatcher.forBlock(blockStateInfo.block);
+    public static BlockStateHelper getMatcher(final BlockStateInfo blockStateInfo) {
+        final BlockStateHelper matcher = BlockStateHelper.forBlock(blockStateInfo.block);
         for (final Map.Entry<IProperty, Comparable> entry : blockStateInfo.stateData.entrySet()) {
             matcher.where(entry.getKey(), new Predicate<Comparable>() {
                 @Override
@@ -77,11 +80,11 @@ public class BlockStateReplacer {
         }
 
         final ResourceLocation location = new ResourceLocation(blockName);
-        if (!Block.REGISTRY.containsKey(location)) {
+        if (!BLOCK_REGISTRY.containsKey(location)) {
             throw new LocalizedException(Names.Messages.INVALID_BLOCK, blockName);
         }
 
-        final Block block = Block.REGISTRY.getObject(location);
+        final Block block = BLOCK_REGISTRY.getObject(location);
         final Map<IProperty, Comparable> propertyData = parsePropertyData(block.getDefaultState(), stateData, true);
         return new BlockStateInfo(block, propertyData);
     }
@@ -108,7 +111,7 @@ public class BlockStateReplacer {
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private static boolean putMatchingProperty(final Map<IProperty, Comparable> map, final IBlockState blockState, final String name, final String value, final boolean strict) throws LocalizedException {
-        for (final IProperty property : blockState.getPropertyKeys()) {
+        for (final IProperty property : blockState.getPropertyNames()) {
             if (property.getName().equalsIgnoreCase(name)) {
                 final Collection<Comparable> allowedValues = property.getAllowedValues();
                 for (final Comparable allowedValue : allowedValues) {
@@ -121,7 +124,7 @@ public class BlockStateReplacer {
         }
 
         if (strict) {
-            throw new LocalizedException(Names.Messages.INVALID_PROPERTY_FOR_BLOCK, name + "=" + value, Block.REGISTRY.getNameForObject(blockState.getBlock()));
+            throw new LocalizedException(Names.Messages.INVALID_PROPERTY_FOR_BLOCK, name + "=" + value, BLOCK_REGISTRY.getNameForObject(blockState.getBlock()));
         }
 
         return false;

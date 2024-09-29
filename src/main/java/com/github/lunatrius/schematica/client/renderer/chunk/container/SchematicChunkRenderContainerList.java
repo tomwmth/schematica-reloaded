@@ -5,12 +5,12 @@ import com.github.lunatrius.schematica.client.renderer.chunk.overlay.RenderOverl
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.chunk.ListedRenderChunk;
 import net.minecraft.client.renderer.chunk.RenderChunk;
-import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumWorldBlockLayer;
 import org.lwjgl.opengl.GL11;
 
 public class SchematicChunkRenderContainerList extends SchematicChunkRenderContainer {
     @Override
-    public void renderChunkLayer(final BlockRenderLayer layer) {
+    public void renderChunkLayer(final EnumWorldBlockLayer layer) {
         if (this.initialized) {
             for (final RenderChunk renderChunk : this.renderChunks) {
                 final ListedRenderChunk listedRenderChunk = (ListedRenderChunk) renderChunk;
@@ -32,7 +32,7 @@ public class SchematicChunkRenderContainerList extends SchematicChunkRenderConta
                 final RenderOverlayList renderOverlayList = (RenderOverlayList) renderOverlay;
                 GlStateManager.pushMatrix();
                 preRenderChunk(renderOverlay);
-                GL11.glCallList(renderOverlayList.getDisplayList(BlockRenderLayer.TRANSLUCENT, renderOverlayList.getCompiledChunk()));
+                GL11.glCallList(renderOverlayList.getDisplayList(EnumWorldBlockLayer.TRANSLUCENT, renderOverlayList.getCompiledChunk()));
                 GlStateManager.popMatrix();
             }
         }

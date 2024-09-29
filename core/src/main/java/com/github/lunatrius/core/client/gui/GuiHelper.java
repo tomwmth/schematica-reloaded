@@ -2,11 +2,11 @@ package com.github.lunatrius.core.client.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
@@ -24,10 +24,10 @@ public class GuiHelper {
     }
 
     public static void drawItemStackSlot(final TextureManager textureManager, final int x, final int y) {
-        textureManager.bindTexture(Gui.STAT_ICONS);
+        textureManager.bindTexture(Gui.statIcons);
 
         final Tessellator tessellator = Tessellator.getInstance();
-        final BufferBuilder buffer = tessellator.getBuffer();
+        final WorldRenderer buffer = tessellator.getWorldRenderer();
         final double uScale = 1.0 / 128.0;
         final double vScale = 1.0 / 128.0;
 
@@ -45,14 +45,14 @@ public class GuiHelper {
         GlStateManager.disableRescaleNormal();
     }
 
-    public static void drawTexturedRectangle(final BufferBuilder buffer, final double x0, final double y0, final double x1, final double y1, final double z, final double u0, final double v0, final double u1, final double v1) {
+    public static void drawTexturedRectangle(final WorldRenderer buffer, final double x0, final double y0, final double x1, final double y1, final double z, final double u0, final double v0, final double u1, final double v1) {
         buffer.pos(x0, y0, z).tex(u0, v0).endVertex();
         buffer.pos(x0, y1, z).tex(u0, v1).endVertex();
         buffer.pos(x1, y1, z).tex(u1, v1).endVertex();
         buffer.pos(x1, y0, z).tex(u1, v0).endVertex();
     }
 
-    public static void drawTexturedRectangle(final BufferBuilder buffer, final double x0, final double y0, final double x1, final double y1, final double z, final double textureWidth, final double textureHeight, final int argb) {
+    public static void drawTexturedRectangle(final WorldRenderer buffer, final double x0, final double y0, final double x1, final double y1, final double z, final double textureWidth, final double textureHeight, final int argb) {
         final double u0 = x0 / textureWidth;
         final double v0 = y0 / textureHeight;
         final double u1 = x1 / textureWidth;
@@ -61,7 +61,7 @@ public class GuiHelper {
         drawTexturedRectangle(buffer, x0, y0, x1, y1, z, u0, v0, u1, v1, argb);
     }
 
-    public static void drawTexturedRectangle(final BufferBuilder buffer, final double x0, final double y0, final double x1, final double y1, final double z, final double u0, final double v0, final double u1, final double v1, final int argb) {
+    public static void drawTexturedRectangle(final WorldRenderer buffer, final double x0, final double y0, final double x1, final double y1, final double z, final double u0, final double v0, final double u1, final double v1, final int argb) {
         final int a = (argb >> 24) & 0xFF;
         final int r = (argb >> 16) & 0xFF;
         final int g = (argb >> 8) & 0xFF;
@@ -70,14 +70,14 @@ public class GuiHelper {
         drawTexturedRectangle(buffer, x0, y0, x1, y1, z, u0, v0, u1, v1, r, g, b, a);
     }
 
-    public static void drawTexturedRectangle(final BufferBuilder buffer, final double x0, final double y0, final double x1, final double y1, final double z, final double u0, final double v0, final double u1, final double v1, final int r, final int g, final int b, final int a) {
+    public static void drawTexturedRectangle(final WorldRenderer buffer, final double x0, final double y0, final double x1, final double y1, final double z, final double u0, final double v0, final double u1, final double v1, final int r, final int g, final int b, final int a) {
         buffer.pos(x0, y0, z).tex(u0, v0).color(r, g, b, a).endVertex();
         buffer.pos(x0, y1, z).tex(u0, v1).color(r, g, b, a).endVertex();
         buffer.pos(x1, y1, z).tex(u1, v1).color(r, g, b, a).endVertex();
         buffer.pos(x1, y0, z).tex(u1, v0).color(r, g, b, a).endVertex();
     }
 
-    public static void drawColoredRectangle(final BufferBuilder buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int argb) {
+    public static void drawColoredRectangle(final WorldRenderer buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int argb) {
         final int a = (argb >> 24) & 0xFF;
         final int r = (argb >> 16) & 0xFF;
         final int g = (argb >> 8) & 0xFF;
@@ -86,14 +86,14 @@ public class GuiHelper {
         drawColoredRectangle(buffer, x0, y0, x1, y1, z, r, g, b, a);
     }
 
-    public static void drawColoredRectangle(final BufferBuilder buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int r, final int g, final int b, final int a) {
+    public static void drawColoredRectangle(final WorldRenderer buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int r, final int g, final int b, final int a) {
         buffer.pos(x0, y0, z).color(r, g, b, a).endVertex();
         buffer.pos(x0, y1, z).color(r, g, b, a).endVertex();
         buffer.pos(x1, y1, z).color(r, g, b, a).endVertex();
         buffer.pos(x1, y0, z).color(r, g, b, a).endVertex();
     }
 
-    public static void drawVerticalGradientRectangle(final BufferBuilder buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int startColor, final int endColor) {
+    public static void drawVerticalGradientRectangle(final WorldRenderer buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int startColor, final int endColor) {
         final int sa = (startColor >> 24) & 255;
         final int sr = (startColor >> 16) & 255;
         final int sg = (startColor >> 8) & 255;
@@ -106,14 +106,14 @@ public class GuiHelper {
         drawVerticalGradientRectangle(buffer, x0, y0, x1, y1, z, sr, sg, sb, sa, er, eg, eb, ea);
     }
 
-    public static void drawVerticalGradientRectangle(final BufferBuilder buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int sr, final int sg, final int sb, final int sa, final int er, final int eg, final int eb, final int ea) {
+    public static void drawVerticalGradientRectangle(final WorldRenderer buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int sr, final int sg, final int sb, final int sa, final int er, final int eg, final int eb, final int ea) {
         buffer.pos(x0, y0, z).color(sr, sg, sb, sa).endVertex();
         buffer.pos(x0, y1, z).color(er, eg, eb, ea).endVertex();
         buffer.pos(x1, y1, z).color(er, eg, eb, ea).endVertex();
         buffer.pos(x1, y0, z).color(sr, sg, sb, sa).endVertex();
     }
 
-    public static void drawHorizontalGradientRectangle(final BufferBuilder buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int startColor, final int endColor) {
+    public static void drawHorizontalGradientRectangle(final WorldRenderer buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int startColor, final int endColor) {
         final int sa = (startColor >> 24) & 255;
         final int sr = (startColor >> 16) & 255;
         final int sg = (startColor >> 8) & 255;
@@ -126,7 +126,7 @@ public class GuiHelper {
         drawHorizontalGradientRectangle(buffer, x0, y0, x1, y1, z, sr, sg, sb, sa, er, eg, eb, ea);
     }
 
-    public static void drawHorizontalGradientRectangle(final BufferBuilder buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int sr, final int sg, final int sb, final int sa, final int er, final int eg, final int eb, final int ea) {
+    public static void drawHorizontalGradientRectangle(final WorldRenderer buffer, final double x0, final double y0, final double x1, final double y1, final double z, final int sr, final int sg, final int sb, final int sa, final int er, final int eg, final int eb, final int ea) {
         buffer.pos(x0, y0, z).color(sr, sg, sb, sa).endVertex();
         buffer.pos(x0, y1, z).color(sr, sg, sb, sa).endVertex();
         buffer.pos(x1, y1, z).color(er, eg, eb, ea).endVertex();

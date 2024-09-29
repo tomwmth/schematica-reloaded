@@ -21,8 +21,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -45,7 +45,7 @@ public abstract class CommonProxy {
         Reference.logger = event.getModLog();
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
 
-        FMLInterModComms.sendMessage("LunatriusCore", "checkUpdate", Reference.FORGE);
+        FMLInterModComms.sendMessage("LunatriusCore", "checkUpdate", Reference.FORGE_VERSION);
     }
 
     public void init(final FMLInitializationEvent event) {
@@ -135,7 +135,7 @@ public abstract class CommonProxy {
                                     schematic.setTileEntity(localPos, reloadedTileEntity);
                                 } catch (final NBTConversionException nce) {
                                     Reference.logger.error("Error while trying to save tile entity '{}'!", tileEntity, nce);
-                                    schematic.setBlockState(localPos, Blocks.BEDROCK.getDefaultState());
+                                    schematic.setBlockState(localPos, Blocks.bedrock.getDefaultState());
                                 }
                             }
                         }

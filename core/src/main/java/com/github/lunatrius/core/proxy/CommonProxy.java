@@ -21,7 +21,7 @@ public abstract class CommonProxy {
     }
 
     public void postInit(final FMLPostInitializationEvent event) {
-        if (VersionChecker.isAllowedToCheck("Global") && ConfigurationHandler.VersionCheck.checkForUpdates) {
+        if (VersionChecker.isAllowedToCheck("Global") && ConfigurationHandler.checkForUpdates) {
             VersionChecker.startVersionCheck();
         }
     }

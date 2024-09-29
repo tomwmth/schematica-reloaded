@@ -15,10 +15,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.FMLControlledNamespacedRegistry;
+import net.minecraftforge.fml.common.registry.GameData;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +28,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class SchematicAlpha extends SchematicFormat {
+    private static final FMLControlledNamespacedRegistry<Block> BLOCK_REGISTRY = GameData.getBlockRegistry();
+
     @Override
     public ISchematic readFromNBT(final NBTTagCompound tagCompound) {
         final ItemStack icon = SchematicUtil.getIconFromNBT(tagCompound);
@@ -59,7 +63,7 @@ public class SchematicAlpha extends SchematicFormat {
             final NBTTagCompound mapping = tagCompound.getCompoundTag(Names.NBT.MAPPING_SCHEMATICA);
             final Set<String> names = mapping.getKeySet();
             for (final String name : names) {
-                oldToNew.put(mapping.getShort(name), (short) Block.REGISTRY.getIDForObject(Block.REGISTRY.getObject(new ResourceLocation(name))));
+                oldToNew.put(mapping.getShort(name), (short) BLOCK_REGISTRY.getIDForObject(BLOCK_REGISTRY.getObject(new ResourceLocation(name))));
             }
         }
 
@@ -76,13 +80,13 @@ public class SchematicAlpha extends SchematicFormat {
                         blockID = id;
                     }
 
-                    final Block block = Block.REGISTRY.getObjectById(blockID);
+                    final Block block = BLOCK_REGISTRY.getObjectById(blockID);
                     pos.set(x, y, z);
                     try {
                         final IBlockState blockState = block.getStateFromMeta(meta);
                         schematic.setBlockState(pos, blockState);
                     } catch (final Exception e) {
-                        Reference.logger.error("Could not set block state at {} to {} with metadata {}", pos, Block.REGISTRY.getNameForObject(block), meta, e);
+                        Reference.logger.error("Could not set block state at {} to {} with metadata {}", pos, BLOCK_REGISTRY.getNameForObject(block), meta, e);
                     }
                 }
             }
@@ -130,14 +134,14 @@ public class SchematicAlpha extends SchematicFormat {
                     final int index = x + (y * schematic.getLength() + z) * schematic.getWidth();
                     final IBlockState blockState = schematic.getBlockState(pos.set(x, y, z));
                     final Block block = blockState.getBlock();
-                    final int blockId = Block.REGISTRY.getIDForObject(block);
+                    final int blockId = BLOCK_REGISTRY.getIDForObject(block);
                     localBlocks[index] = (byte) blockId;
                     localMetadata[index] = (byte) block.getMetaFromState(blockState);
                     if ((extraBlocks[index] = (byte) (blockId >> 8)) > 0) {
                         extra = true;
                     }
 
-                    final String name = String.valueOf(Block.REGISTRY.getNameForObject(block));
+                    final String name = String.valueOf(BLOCK_REGISTRY.getNameForObject(block));
                     if (!mappings.containsKey(name)) {
                         mappings.put(name, (short) blockId);
                     }
@@ -157,9 +161,9 @@ public class SchematicAlpha extends SchematicFormat {
                 if (--count > 0) {
                     final IBlockState blockState = schematic.getBlockState(tePos);
                     final Block block = blockState.getBlock();
-                    Reference.logger.error("Block {}[{}] with TileEntity {} failed to save! Replacing with bedrock...", block, block != null ? Block.REGISTRY.getNameForObject(block) : "?", tileEntity.getClass().getName(), e);
+                    Reference.logger.error("Block {}[{}] with TileEntity {} failed to save! Replacing with bedrock...", block, block != null ? BLOCK_REGISTRY.getNameForObject(block) : "?", tileEntity.getClass().getName(), e);
                 }
-                localBlocks[index] = (byte) Block.REGISTRY.getIDForObject(Blocks.BEDROCK);
+                localBlocks[index] = (byte) BLOCK_REGISTRY.getIDForObject(Blocks.bedrock);
                 localMetadata[index] = 0;
                 extraBlocks[index] = 0;
             }

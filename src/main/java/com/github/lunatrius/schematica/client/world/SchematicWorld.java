@@ -9,22 +9,20 @@ import com.github.lunatrius.schematica.reference.Names;
 import com.github.lunatrius.schematica.reference.Reference;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockStateMatcher;
+import net.minecraft.block.state.pattern.BlockStateHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.GameType;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SchematicWorld extends WorldClient {
-    private static final WorldSettings WORLD_SETTINGS = new WorldSettings(0, GameType.CREATIVE, false, false, WorldType.FLAT);
+    private static final WorldSettings WORLD_SETTINGS = new WorldSettings(0, WorldSettings.GameType.CREATIVE, false, false, WorldType.FLAT);
 
     public static enum LayerMode {
         ALL(Names.Gui.Control.MODE_ALL) {
@@ -87,7 +85,7 @@ public class SchematicWorld extends WorldClient {
     @Override
     public IBlockState getBlockState(final BlockPos pos) {
         if (!this.layerMode.shouldUseLayer(this, pos.getY())) {
-            return Blocks.AIR.getDefaultState();
+            return Blocks.air.getDefaultState();
         }
 
         return this.schematic.getBlockState(pos);
@@ -131,7 +129,7 @@ public class SchematicWorld extends WorldClient {
 
     @Override
     public boolean isBlockNormalCube(final BlockPos pos, final boolean _default) {
-        return getBlockState(pos).isNormalCube();
+        return getBlockState(pos).getBlock().isNormalCube();
     }
 
     @Override
@@ -146,12 +144,12 @@ public class SchematicWorld extends WorldClient {
     @Override
     public boolean isAirBlock(final BlockPos pos) {
         final IBlockState blockState = getBlockState(pos);
-        return blockState.getBlock().isAir(blockState, this, pos);
+        return blockState.getBlock().isAir(this, pos);
     }
 
     @Override
-    public Biome getBiome(final BlockPos pos) {
-        return Biomes.JUNGLE;
+    public BiomeGenBase getBiomeGenForCoords(final BlockPos pos) {
+        return BiomeGenBase.jungle;
     }
 
     public int getWidth() {
@@ -185,7 +183,7 @@ public class SchematicWorld extends WorldClient {
 
     @Override
     public boolean isSideSolid(final BlockPos pos, final EnumFacing side, final boolean _default) {
-        return getBlockState(pos).isSideSolid(this, pos, side);
+        return getBlockState(pos).getBlock().isSideSolid(this, pos, side);
     }
 
     public void setSchematic(final ISchematic schematic) {
@@ -197,7 +195,7 @@ public class SchematicWorld extends WorldClient {
     }
 
     public void initializeTileEntity(final TileEntity tileEntity) {
-        tileEntity.setWorld(this);
+        tileEntity.setWorldObj(this);
         tileEntity.getBlockType();
         try {
             tileEntity.invalidate();
@@ -229,7 +227,7 @@ public class SchematicWorld extends WorldClient {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public int replaceBlock(final BlockStateMatcher matcher, final BlockStateReplacer replacer, final Map<IProperty, Comparable> properties) {
+    public int replaceBlock(final BlockStateHelper matcher, final BlockStateReplacer replacer, final Map<IProperty, Comparable> properties) {
         int count = 0;
 
         for (final MBlockPos pos : BlockPosHelper.getAllInBox(0, 0, 0, getWidth(), getHeight(), getLength())) {
@@ -249,7 +247,7 @@ public class SchematicWorld extends WorldClient {
                 }
 
                 if (this.schematic.setBlockState(pos, replacement)) {
-                    notifyBlockUpdate(pos.add(this.position), blockState, replacement, 3);
+                    markBlockForUpdate(pos.add(this.position));
                     count++;
                 }
             }

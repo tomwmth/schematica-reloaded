@@ -1,11 +1,9 @@
 package com.github.lunatrius.schematica.world.storage;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.chunk.storage.IChunkLoader;
-import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraft.world.storage.IPlayerFileData;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
@@ -13,7 +11,6 @@ import net.minecraft.world.storage.WorldInfo;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
 
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class SaveHandlerSchematic implements ISaveHandler {
     @Override
@@ -54,7 +51,12 @@ public class SaveHandlerSchematic implements ISaveHandler {
     }
 
     @Override
-    public TemplateManager getStructureTemplateManager() {
+    public String getWorldDirectoryName() {
         return null;
     }
+
+    //    @Override
+//    public TemplateManager getStructureTemplateManager() {
+//        return null;
+//    }
 }

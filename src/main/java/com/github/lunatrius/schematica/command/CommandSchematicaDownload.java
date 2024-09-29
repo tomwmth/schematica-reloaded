@@ -9,15 +9,13 @@ import com.github.lunatrius.schematica.reference.Names;
 import com.github.lunatrius.schematica.reference.Reference;
 import com.github.lunatrius.schematica.util.FileFilterSchematic;
 import com.github.lunatrius.schematica.world.schematic.SchematicFormat;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentTranslation;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
@@ -25,23 +23,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
 public class CommandSchematicaDownload extends CommandSchematicaBase {
     private static final FileFilterSchematic FILE_FILTER_SCHEMATIC = new FileFilterSchematic(false);
 
     @Override
-    public String getName() {
+    public String getCommandName() {
         return Names.Command.Download.NAME;
     }
 
     @Override
-    public String getUsage(final ICommandSender sender) {
+    public String getCommandUsage(final ICommandSender sender) {
         return Names.Command.Download.Message.USAGE;
     }
 
     @Override
-    public List<String> getTabCompletions(final MinecraftServer server, final ICommandSender sender, final String[] args, final BlockPos pos) {
+    public List<String> addTabCompletionOptions(final ICommandSender sender, final String[] args, final BlockPos pos) {
         if (!(sender instanceof EntityPlayer)) {
             return Collections.emptyList();
         }
@@ -63,9 +60,9 @@ public class CommandSchematicaDownload extends CommandSchematicaBase {
     }
 
     @Override
-    public void execute(final MinecraftServer server, final ICommandSender sender, final String[] args) throws CommandException {
+    public void processCommand(final ICommandSender sender, final String[] args) throws CommandException {
         if (args.length < 1) {
-            throw new WrongUsageException(getUsage(sender));
+            throw new WrongUsageException(getCommandUsage(sender));
         }
 
         if (!(sender instanceof EntityPlayerMP)) {
@@ -84,7 +81,7 @@ public class CommandSchematicaDownload extends CommandSchematicaBase {
 
         if (schematic != null) {
             DownloadHandler.INSTANCE.transferMap.put(player, new SchematicTransfer(schematic, filename));
-            sender.sendMessage(new TextComponentTranslation(Names.Command.Download.Message.DOWNLOAD_STARTED, filename));
+            sender.addChatMessage(new ChatComponentTranslation(Names.Command.Download.Message.DOWNLOAD_STARTED, filename));
         } else {
             throw new CommandException(Names.Command.Download.Message.DOWNLOAD_FAILED);
         }

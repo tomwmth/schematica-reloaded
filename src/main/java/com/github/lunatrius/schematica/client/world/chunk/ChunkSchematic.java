@@ -2,7 +2,7 @@ package com.github.lunatrius.schematica.client.world.chunk;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -28,7 +28,7 @@ public class ChunkSchematic extends Chunk {
     }
 
     @Override
-    public boolean isEmptyBetween(final int startY, final int endY) {
+    public boolean getAreLevelsEmpty(final int startY, final int endY) {
         return false;
     }
 

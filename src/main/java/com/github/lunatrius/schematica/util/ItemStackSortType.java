@@ -3,27 +3,26 @@ package com.github.lunatrius.schematica.util;
 import com.github.lunatrius.schematica.client.util.BlockList;
 import com.github.lunatrius.schematica.reference.Reference;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public enum ItemStackSortType {
-    NAME_ASC("name", "\u2191", (Comparator<BlockList.WrappedItemStack>) (final BlockList.WrappedItemStack wrappedItemStackA, final BlockList.WrappedItemStack wrappedItemStackB) -> {
+    NAME_ASC("name", "↑", (final BlockList.WrappedItemStack wrappedItemStackA, final BlockList.WrappedItemStack wrappedItemStackB) -> {
         final String nameA = wrappedItemStackA.getItemStackDisplayName();
         final String nameB = wrappedItemStackB.getItemStackDisplayName();
 
         return nameA.compareTo(nameB);
     }),
-    NAME_DESC("name", "\u2193", (Comparator<BlockList.WrappedItemStack>) (final BlockList.WrappedItemStack wrappedItemStackA, final BlockList.WrappedItemStack wrappedItemStackB) -> {
+    NAME_DESC("name", "↓", (final BlockList.WrappedItemStack wrappedItemStackA, final BlockList.WrappedItemStack wrappedItemStackB) -> {
         final String nameA = wrappedItemStackA.getItemStackDisplayName();
         final String nameB = wrappedItemStackB.getItemStackDisplayName();
 
         return nameB.compareTo(nameA);
     }),
-    SIZE_ASC("amount", "\u2191", (Comparator<BlockList.WrappedItemStack>) (final BlockList.WrappedItemStack wrappedItemStackA, final BlockList.WrappedItemStack wrappedItemStackB) -> {
+    SIZE_ASC("amount", "↑", (final BlockList.WrappedItemStack wrappedItemStackA, final BlockList.WrappedItemStack wrappedItemStackB) -> {
         return wrappedItemStackA.total - wrappedItemStackB.total;
     }),
-    SIZE_DESC("amount", "\u2193", (Comparator<BlockList.WrappedItemStack>) (final BlockList.WrappedItemStack wrappedItemStackA, final BlockList.WrappedItemStack wrappedItemStackB) -> {
+    SIZE_DESC("amount", "↓", (final BlockList.WrappedItemStack wrappedItemStackA, final BlockList.WrappedItemStack wrappedItemStackB) -> {
         return wrappedItemStackB.total - wrappedItemStackA.total;
     });
 
@@ -40,7 +39,7 @@ public enum ItemStackSortType {
 
     public void sort(final List<BlockList.WrappedItemStack> blockList) {
         try {
-            Collections.sort(blockList, this.comparator);
+            blockList.sort(this.comparator);
         } catch (final Exception e) {
             Reference.logger.error("Could not sort the block list!", e);
         }

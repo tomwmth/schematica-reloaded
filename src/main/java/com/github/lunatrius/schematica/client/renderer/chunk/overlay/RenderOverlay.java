@@ -8,17 +8,17 @@ import com.github.lunatrius.schematica.handler.ConfigurationHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.chunk.ChunkCompileTaskGenerator;
 import net.minecraft.client.renderer.chunk.CompiledChunk;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.client.renderer.chunk.VisGraph;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexBuffer;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.ChunkCache;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
@@ -43,8 +43,8 @@ public class RenderOverlay extends RenderChunk {
 
     private final VertexBuffer vertexBuffer;
 
-    public RenderOverlay(final World world, final RenderGlobal renderGlobal, final int index) {
-        super(world, renderGlobal, index);
+    public RenderOverlay(final World world, final RenderGlobal renderGlobal, final BlockPos pos, final int index) {
+        super(world, renderGlobal, pos, index);
         this.vertexBuffer = OpenGlHelper.useVbo() ? new VertexBuffer(DefaultVertexFormats.POSITION_COLOR) : null;
     }
 
@@ -82,13 +82,13 @@ public class RenderOverlay extends RenderChunk {
 
         final VisGraph visgraph = new VisGraph();
 
-        if (!chunkCache.isEmpty()) {
+        if (!chunkCache.extendedLevelsInChunkCache()) {
             ++renderChunksUpdated;
 
-            final World mcWorld = Minecraft.getMinecraft().world;
+            final World mcWorld = Minecraft.getMinecraft().theWorld;
 
-            final BlockRenderLayer layer = BlockRenderLayer.TRANSLUCENT;
-            final BufferBuilder buffer = generator.getRegionRenderCacheBuilder().getWorldRendererByLayer(layer);
+            final EnumWorldBlockLayer layer = EnumWorldBlockLayer.TRANSLUCENT;
+            final WorldRenderer buffer = generator.getRegionRenderCacheBuilder().getWorldRendererByLayer(layer);
 
             GeometryTessellator.setStaticDelta(ConfigurationHandler.blockDelta);
 
@@ -111,11 +111,11 @@ public class RenderOverlay extends RenderChunk {
                 final IBlockState schBlockState = schematic.getBlockState(pos);
                 final Block schBlock = schBlockState.getBlock();
 
-                if (schBlockState.isOpaqueCube()) {
-                    visgraph.setOpaqueCube(pos);
+                if (schBlock.isOpaqueCube()) {
+                    visgraph.func_178606_a(pos);
                 }
 
-                mcPos.setPos(pos.getX() + schematic.position.getX(), pos.getY() + schematic.position.getY(), pos.getZ() + schematic.position.getZ());
+                mcPos.set(pos.getX() + schematic.position.getX(), pos.getY() + schematic.position.getY(), pos.getZ() + schematic.position.getZ());
                 final IBlockState mcBlockState = mcWorld.getBlockState(mcPos);
                 final Block mcBlock = mcBlockState.getBlock();
 
@@ -209,7 +209,7 @@ public class RenderOverlay extends RenderChunk {
     }
 
     @Override
-    public void preRenderBlocks(final BufferBuilder buffer, final BlockPos pos) {
+    public void preRenderBlocks(final WorldRenderer buffer, final BlockPos pos) {
         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
         buffer.setTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
     }

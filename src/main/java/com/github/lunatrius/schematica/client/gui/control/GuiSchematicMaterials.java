@@ -42,7 +42,7 @@ public class GuiSchematicMaterials extends GuiScreenBase {
         super(guiScreen);
         final Minecraft minecraft = Minecraft.getMinecraft();
         final SchematicWorld schematic = ClientProxy.schematic;
-        this.blockList = new BlockList().getList(minecraft.player, schematic, minecraft.world);
+        this.blockList = new BlockList().getList(minecraft.thePlayer, schematic, minecraft.theWorld);
         this.sortType.sort(this.blockList);
     }
 
@@ -98,8 +98,8 @@ public class GuiSchematicMaterials extends GuiScreenBase {
     public void drawScreen(final int x, final int y, final float partialTicks) {
         this.guiSchematicMaterialsSlot.drawScreen(x, y, partialTicks);
 
-        drawString(this.fontRenderer, this.strMaterialName, this.width / 2 - 108, 4, 0x00FFFFFF);
-        drawString(this.fontRenderer, this.strMaterialAmount, this.width / 2 + 108 - this.fontRenderer.getStringWidth(this.strMaterialAmount), 4, 0x00FFFFFF);
+        drawString(this.fontRendererObj, this.strMaterialName, this.width / 2 - 108, 4, 0x00FFFFFF);
+        drawString(this.fontRendererObj, this.strMaterialAmount, this.width / 2 + 108 - this.fontRendererObj.getStringWidth(this.strMaterialAmount), 4, 0x00FFFFFF);
         super.drawScreen(x, y, partialTicks);
     }
 
@@ -130,7 +130,7 @@ public class GuiSchematicMaterials extends GuiScreenBase {
 
         final File dumps = Schematica.proxy.getDirectory("dumps");
         try {
-            try (FileOutputStream outputStream = new FileOutputStream(new File(dumps, Reference.MODID + "-materials.txt"))) {
+            try (FileOutputStream outputStream = new FileOutputStream(new File(dumps, Reference.MOD_ID + "-materials.txt"))) {
                 IOUtils.write(stringBuilder.toString(), outputStream, Charset.forName("utf-8"));
             }
         } catch (final Exception e) {
