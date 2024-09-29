@@ -931,7 +931,7 @@ public class RenderSchematic extends RenderGlobal {
 
     @Override
     public boolean hasNoChunkUpdates() {
-        return this.chunksToUpdate.isEmpty() && this.renderDispatcher.hasChunkUpdates();
+        return this.chunksToUpdate.isEmpty() && this.renderDispatcher.hasNoChunkUpdates();
     }
 
     @Override

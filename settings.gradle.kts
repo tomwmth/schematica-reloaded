@@ -16,4 +16,6 @@ pluginManagement {
     }
 }
 
+include("core", "api")
+
 rootProject.name = "Schematica"
