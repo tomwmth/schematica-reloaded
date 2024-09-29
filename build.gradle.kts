@@ -1,7 +1,11 @@
+import org.apache.commons.lang3.SystemUtils
+
 plugins {
     id("java")
     id("gg.essential.loom") version "1.6.+"
     id("dev.architectury.architectury-pack200") version "0.1.3"
+    id("com.gradleup.shadow") version ("8.3.2")
+    id("net.kyori.blossom") version ("1.3.1")
 }
 
 val modId: String by project
@@ -27,7 +31,7 @@ allprojects {
     dependencies {
         minecraft("com.mojang:minecraft:${minecraftVersion}")
         mappings("de.oceanlabs.mcp:mcp_stable:${mcpVersion}-${minecraftVersion}")
-        forge("net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}")
+        forge("net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}-${minecraftVersion}")
     }
 
     java {
@@ -35,13 +39,18 @@ allprojects {
     }
 }
 
+val shade: Configuration by configurations.creating {
+    configurations.implementation.get().extendsFrom(this)
+}
+
 repositories {
-    maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
+    maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1/")
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":api"))
+    shade(project(":core"))
+    shade(project(":api"))
+
     runtimeOnly("me.djtheredstoner:DevAuth-forge-legacy:1.2.1")
 }
 
@@ -53,9 +62,51 @@ loom {
     runConfigs {
         getByName("client") {
             property("devauth.enabled", "true")
+            if (SystemUtils.IS_OS_LINUX) {
+                environmentVariable("__GL_THREADED_OPTIMIZATIONS", "0")
+            }
         }
         remove(getByName("server"))
     }
+}
+
+blossom {
+    replaceToken("\${modId}", modId)
+    replaceToken("\${modName}", modName)
+    replaceToken("\${modVersion}", modVersion)
+    replaceToken("\${minecraftVersion}", minecraftVersion)
+    replaceToken("\${forgeVersion}", forgeVersion)
+}
+
+sourceSets {
+    main {
+        output.setResourcesDir(java.classesDirectory)
+    }
+}
+
+tasks.processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    inputs.property("modId", modId)
+    inputs.property("modName", modName)
+    inputs.property("modVersion", modVersion)
+    inputs.property("minecraftVersion", minecraftVersion)
+    inputs.property("forgeVersion", forgeVersion)
+
+    filesMatching("mcmod.info") {
+        expand(
+            "modId" to modId,
+            "modName" to modName,
+            "modVersion" to modVersion,
+            "minecraftVersion" to minecraftVersion,
+            "forgeVersion" to forgeVersion
+        )
+    }
+}
+
+tasks.shadowJar {
+    configurations.clear()
+    configurations.add(shade)
 }
 
 tasks.jar {
@@ -64,4 +115,21 @@ tasks.jar {
         "ModSide" to "CLIENT",
         "ForceLoadAsMod" to "true",
     )
+}
+
+tasks.build {
+    dependsOn(tasks.shadowJar)
+}
+
+val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
+    input = tasks.shadowJar.get().archiveFile
+    archiveFileName.set("${modId}-mc${minecraftVersion}-${modVersion}.jar")
+}
+
+tasks.assemble {
+    dependsOn(tasks.remapJar)
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
 }
