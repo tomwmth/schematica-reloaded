@@ -29,81 +29,123 @@ public class ConfigurationHandler {
 
     public static Configuration configuration;
 
-    public static final boolean DUMP_BLOCK_LIST_DEFAULT = false;
+    // region Defaults - Debug
     public static final boolean SHOW_DEBUG_INFO_DEFAULT = true;
+    public static final boolean DUMP_BLOCK_LIST_DEFAULT = false;
+    // endregion
+
+    // region Defaults - General
+    public static final String[] EXTRA_AIR_BLOCKS_DEFAULT = {};
+    public static final String SCHEMATIC_DIRECTORY_STR = "./schematics";
+    public static final File SCHEMATIC_DIRECTORY_DEFAULT = new File(Schematica.proxy.getDataDirectory(), SCHEMATIC_DIRECTORY_STR);
+    public static final String SORT_TYPE_DEFAULT = "";
+    // endregion
+
+    // region Defaults - Printer
+    public static final boolean[] SWAP_SLOTS_DEFAULT = new boolean[] {
+            false, false, false, false, false, true, true, true, true
+    };
+    public static final boolean DESTROY_BLOCKS_DEFAULT = false;
+    public static final boolean DESTROY_INSTANTLY_DEFAULT = false;
+    public static final boolean PLACE_INSTANTLY_DEFAULT = false;
+    public static final boolean PLACE_ADJACENT_DEFAULT = true;
+    public static final int PLACE_DELAY_DEFAULT = 1;
+    public static final int PLACE_DISTANCE_DEFAULT = 5;
+    public static final int TIMEOUT_DEFAULT = 10;
+    // endregion
+
+    // region Defaults - Rendering
     public static final boolean ENABLE_ALPHA_DEFAULT = false;
     public static final double ALPHA_DEFAULT = 1.0;
     public static final boolean HIGHLIGHT_DEFAULT = true;
     public static final boolean HIGHLIGHT_AIR_DEFAULT = true;
-    public static final double BLOCK_DELTA_DEFAULT = 0.005;
     public static final int RENDER_DISTANCE_DEFAULT = 8;
-    public static final int PLACE_DELAY_DEFAULT = 1;
-    public static final int TIMEOUT_DEFAULT = 10;
-    public static final int PLACE_DISTANCE_DEFAULT = 5;
-    public static final boolean PLACE_INSTANTLY_DEFAULT = false;
-    public static final boolean DESTROY_BLOCKS_DEFAULT = false;
-    public static final boolean DESTROY_INSTANTLY_DEFAULT = false;
-    public static final boolean PLACE_ADJACENT_DEFAULT = true;
-    public static final boolean[] SWAP_SLOTS_DEFAULT = new boolean[] {
-            false, false, false, false, false, true, true, true, true
-    };
-    public static final String SCHEMATIC_DIRECTORY_STR = "./schematics";
-    public static final File SCHEMATIC_DIRECTORY_DEFAULT = new File(Schematica.proxy.getDataDirectory(), SCHEMATIC_DIRECTORY_STR);
-    public static final String[] EXTRA_AIR_BLOCKS_DEFAULT = {};
-    public static final String SORT_TYPE_DEFAULT = "";
+    public static final double BLOCK_DELTA_DEFAULT = 0.005;
+    // endregion
+
+    // region Defaults - Server
     public static final boolean PRINTER_ENABLED_DEFAULT = true;
     public static final boolean SAVE_ENABLED_DEFAULT = true;
     public static final boolean LOAD_ENABLED_DEFAULT = true;
     public static final int PLAYER_QUOTA_KILOBYTES_DEFAULT = 8192;
+    // endregion
 
-    public static boolean dumpBlockList = DUMP_BLOCK_LIST_DEFAULT;
+    // region Values - Debug
     public static boolean showDebugInfo = SHOW_DEBUG_INFO_DEFAULT;
+    public static boolean dumpBlockList = DUMP_BLOCK_LIST_DEFAULT;
+    // endregion
+
+    // region Values - General
+    public static String[] extraAirBlocks = Arrays.copyOf(EXTRA_AIR_BLOCKS_DEFAULT, EXTRA_AIR_BLOCKS_DEFAULT.length);
+    public static File schematicDirectory = SCHEMATIC_DIRECTORY_DEFAULT;
+    public static String sortType = SORT_TYPE_DEFAULT;
+    // endregion
+
+    // region Values - Printer
+    public static final Queue<Integer> swapSlotsQueue = new ArrayDeque<Integer>();
+    public static boolean[] swapSlots = Arrays.copyOf(SWAP_SLOTS_DEFAULT, SWAP_SLOTS_DEFAULT.length);
+    public static boolean destroyBlocks = DESTROY_BLOCKS_DEFAULT;
+    public static boolean destroyInstantly = DESTROY_INSTANTLY_DEFAULT;
+    public static boolean placeInstantly = PLACE_INSTANTLY_DEFAULT;
+    public static boolean placeAdjacent = PLACE_ADJACENT_DEFAULT;
+    public static int placeDelay = PLACE_DELAY_DEFAULT;
+    public static int placeDistance = PLACE_DISTANCE_DEFAULT;
+    public static int timeout = TIMEOUT_DEFAULT;
+    // endregion
+
+    // region Values - Rendering
     public static boolean enableAlpha = ENABLE_ALPHA_DEFAULT;
     public static float alpha = (float) ALPHA_DEFAULT;
     public static boolean highlight = HIGHLIGHT_DEFAULT;
     public static boolean highlightAir = HIGHLIGHT_AIR_DEFAULT;
-    public static double blockDelta = BLOCK_DELTA_DEFAULT;
     public static int renderDistance = RENDER_DISTANCE_DEFAULT;
-    public static int placeDelay = PLACE_DELAY_DEFAULT;
-    public static int timeout = TIMEOUT_DEFAULT;
-    public static int placeDistance = PLACE_DISTANCE_DEFAULT;
-    public static boolean placeInstantly = PLACE_INSTANTLY_DEFAULT;
-    public static boolean destroyBlocks = DESTROY_BLOCKS_DEFAULT;
-    public static boolean destroyInstantly = DESTROY_INSTANTLY_DEFAULT;
-    public static boolean placeAdjacent = PLACE_ADJACENT_DEFAULT;
-    public static boolean[] swapSlots = Arrays.copyOf(SWAP_SLOTS_DEFAULT, SWAP_SLOTS_DEFAULT.length);
-    public static final Queue<Integer> swapSlotsQueue = new ArrayDeque<Integer>();
-    public static File schematicDirectory = SCHEMATIC_DIRECTORY_DEFAULT;
-    public static String[] extraAirBlocks = Arrays.copyOf(EXTRA_AIR_BLOCKS_DEFAULT, EXTRA_AIR_BLOCKS_DEFAULT.length);
-    public static String sortType = SORT_TYPE_DEFAULT;
+    public static double blockDelta = BLOCK_DELTA_DEFAULT;
+    // endregion
+
+    // region Values - Server
     public static boolean printerEnabled = PRINTER_ENABLED_DEFAULT;
     public static boolean saveEnabled = SAVE_ENABLED_DEFAULT;
     public static boolean loadEnabled = LOAD_ENABLED_DEFAULT;
     public static int playerQuotaKilobytes = PLAYER_QUOTA_KILOBYTES_DEFAULT;
+    // endregion
 
-    public static Property propDumpBlockList = null;
+    // region Properties - Debug
     public static Property propShowDebugInfo = null;
+    public static Property propDumpBlockList = null;
+    // endregion
+
+    // region Properties - General
+    public static Property propExtraAirBlocks = null;
+    public static Property propSchematicDirectory = null;
+    public static Property propSortType = null;
+    // endregion
+
+    // region Properties - Printer
+    public static Property[] propSwapSlots = new Property[SWAP_SLOTS_DEFAULT.length];
+    public static Property propDestroyBlocks = null;
+    public static Property propDestroyInstantly = null;
+    public static Property propPlaceInstantly = null;
+    public static Property propPlaceAdjacent = null;
+    public static Property propPlaceDelay = null;
+    public static Property propPlaceDistance = null;
+    public static Property propTimeout = null;
+    // endregion
+
+    // region Properties - Rendering
     public static Property propEnableAlpha = null;
     public static Property propAlpha = null;
     public static Property propHighlight = null;
     public static Property propHighlightAir = null;
-    public static Property propBlockDelta = null;
     public static Property propRenderDistance = null;
-    public static Property propPlaceDelay = null;
-    public static Property propTimeout = null;
-    public static Property propPlaceDistance = null;
-    public static Property propPlaceInstantly = null;
-    public static Property propDestroyBlocks = null;
-    public static Property propDestroyInstantly = null;
-    public static Property propPlaceAdjacent = null;
-    public static Property[] propSwapSlots = new Property[SWAP_SLOTS_DEFAULT.length];
-    public static Property propSchematicDirectory = null;
-    public static Property propExtraAirBlocks = null;
-    public static Property propSortType = null;
+    public static Property propBlockDelta = null;
+    // endregion
+
+    // region Properties - Server
     public static Property propPrinterEnabled = null;
     public static Property propSaveEnabled = null;
     public static Property propLoadEnabled = null;
     public static Property propPlayerQuotaKilobytes = null;
+    // endregion
 
     private static final Set<Block> extraAirBlockList = new HashSet<Block>();
 
@@ -116,10 +158,10 @@ public class ConfigurationHandler {
 
     public static void loadConfiguration() {
         loadConfigurationDebug();
-        loadConfigurationRender();
-        loadConfigurationPrinter();
-        loadConfigurationSwapSlots();
         loadConfigurationGeneral();
+        loadConfigurationSwapSlots();
+        loadConfigurationPrinter();
+        loadConfigurationRender();
         loadConfigurationServer();
 
         Schematica.proxy.createFolders();
