@@ -52,6 +52,7 @@ public class ConfigurationHandler {
     public static final int PLACE_DELAY_DEFAULT = 1;
     public static final int PLACE_DISTANCE_DEFAULT = 5;
     public static final int TIMEOUT_DEFAULT = 10;
+    public static final boolean CHANGE_STATE_DEFAULT = true;
     // endregion
 
     // region Defaults - Rendering
@@ -91,6 +92,7 @@ public class ConfigurationHandler {
     public static int placeDelay = PLACE_DELAY_DEFAULT;
     public static int placeDistance = PLACE_DISTANCE_DEFAULT;
     public static int timeout = TIMEOUT_DEFAULT;
+    public static boolean changeState = CHANGE_STATE_DEFAULT;
     // endregion
 
     // region Values - Rendering
@@ -129,6 +131,7 @@ public class ConfigurationHandler {
     public static Property propPlaceDelay = null;
     public static Property propPlaceDistance = null;
     public static Property propTimeout = null;
+    public static Property propChangeState = null;
     // endregion
 
     // region Properties - Rendering
@@ -236,6 +239,10 @@ public class ConfigurationHandler {
         propPlaceAdjacent = configuration.get(Names.Config.Category.PRINTER, Names.Config.PLACE_ADJACENT, PLACE_ADJACENT_DEFAULT, Names.Config.PLACE_ADJACENT_DESC);
         propPlaceAdjacent.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.PLACE_ADJACENT);
         placeAdjacent = propPlaceAdjacent.getBoolean(PLACE_ADJACENT_DEFAULT);
+
+        propChangeState = configuration.get(Names.Config.Category.PRINTER, Names.Config.CHANGE_STATE, CHANGE_STATE_DEFAULT, Names.Config.CHANGE_STATE_DESC);
+        propChangeState.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.CHANGE_STATE);
+        changeState = propChangeState.getBoolean(CHANGE_STATE_DEFAULT);
     }
 
     private static void loadConfigurationSwapSlots() {

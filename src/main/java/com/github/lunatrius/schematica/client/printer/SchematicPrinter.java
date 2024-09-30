@@ -13,7 +13,9 @@ import com.github.lunatrius.schematica.handler.ConfigurationHandler;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.github.lunatrius.schematica.reference.Constants;
 import com.github.lunatrius.schematica.reference.Reference;
-import net.minecraft.block.Block;
+import com.google.common.collect.ImmutableMap;
+import net.minecraft.block.*;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -31,13 +33,19 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fluids.BlockFluidBase;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class SchematicPrinter {
     public static final SchematicPrinter INSTANCE = new SchematicPrinter();
+
+    private static final Map<Class<? extends Block>, IProperty<?>> INTERACT_STATE_MAP = ImmutableMap.<Class<? extends Block>, IProperty<?>>builder()
+            .put(BlockRedstoneRepeater.class, BlockRedstoneRepeater.DELAY)
+            .put(BlockRedstoneComparator.class, BlockRedstoneComparator.MODE)
+            .put(BlockTrapDoor.class, BlockTrapDoor.OPEN)
+            .put(BlockLever.class, BlockLever.POWERED)
+            .put(BlockDoor.class, BlockDoor.OPEN)
+            .put(BlockFenceGate.class, BlockFenceGate.OPEN)
+            .build();
 
     private final Minecraft minecraft = Minecraft.getMinecraft();
 
@@ -196,6 +204,28 @@ public class SchematicPrinter {
             }
 
             return false;
+        }
+
+        if (ConfigurationHandler.changeState && this.arePropertiesEqual(BlockDirectional.FACING, blockState, realBlockState)) {
+            boolean interactRequired = false;
+
+            for (Map.Entry<Class<? extends Block>, IProperty<?>> entry : INTERACT_STATE_MAP.entrySet()) {
+                final Class<? extends Block> clazz = entry.getKey();
+                final IProperty<?> prop = entry.getValue();
+                if (this.stateRequiresInteract(clazz, prop, blockState, realBlockState)) {
+                    interactRequired = true;
+                    break;
+                }
+            }
+
+            if (interactRequired) {
+                this.syncSneaking(player, false);
+                final boolean success = this.minecraft.playerController.onPlayerRightClick(player, world, player.getHeldItem(), realPos, EnumFacing.UP, new Vec3(0, 0, 0));
+                if (success) {
+                    this.timeout[x][y][z] = (byte) ConfigurationHandler.timeout;
+                    return !ConfigurationHandler.placeInstantly;
+                }
+            }
         }
 
         if (ConfigurationHandler.destroyBlocks && !world.isAirBlock(realPos) && this.minecraft.playerController.isInCreativeMode()) {
@@ -417,5 +447,30 @@ public class SchematicPrinter {
 
     private boolean swapSlots(final int from, final int to) {
         return this.minecraft.playerController.windowClick(this.minecraft.thePlayer.inventoryContainer.windowId, from, to, 2, this.minecraft.thePlayer) == null;
+    }
+
+    private boolean stateRequiresInteract(final Class<? extends Block> clazz, final IProperty<?> property, final IBlockState target, final IBlockState real) {
+        if (clazz.isAssignableFrom(real.getBlock().getClass()) && clazz.isAssignableFrom(target.getBlock().getClass())) {
+            return this.arePropertiesNotEqual(property, target, real);
+        }
+        return false;
+    }
+
+    private <T extends Comparable<T>> boolean arePropertiesEqual(final IProperty<T> property, final IBlockState main, final IBlockState state) {
+        final T mainVal = this.getValue(property, main), stateVal = this.getValue(property, state);
+        return mainVal != null && mainVal == stateVal;
+    }
+
+    private <T extends Comparable<T>> boolean arePropertiesNotEqual(final IProperty<T> property, final IBlockState main, final IBlockState state) {
+        final T mainVal = this.getValue(property, main), stateVal = this.getValue(property, state);
+        return mainVal != null && mainVal != stateVal;
+    }
+
+    private <T extends Comparable<T>> T getValue(final IProperty<T> property, final IBlockState state) {
+        T val = null;
+        if (state.getProperties().containsKey(property)) {
+            val = state.getValue(property);
+        }
+        return val;
     }
 }

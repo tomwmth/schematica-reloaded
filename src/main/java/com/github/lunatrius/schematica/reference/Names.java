@@ -46,6 +46,8 @@ public final class Names {
         public static final String PLACE_ADJACENT_DESC = "Place blocks only if there is an adjacent block next to them.";
         public static final String SWAP_SLOT = "swapSlot";
         public static final String SWAP_SLOT_DESC = "Allow the printer to use this hotbar slot.";
+        public static final String CHANGE_STATE = "changeState";
+        public static final String CHANGE_STATE_DESC = "Interact with blocks to fix their state when necessary.";
 
         public static final String SCHEMATIC_DIRECTORY = "schematicDirectory";
         public static final String SCHEMATIC_DIRECTORY_DESC = "Schematic directory.";
