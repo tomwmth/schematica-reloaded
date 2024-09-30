@@ -112,13 +112,14 @@ public class InputHandler {
                 }
             }
 
-            if (this.minecraft.gameSettings.keyBindPickBlock.isPressed() &&
-                    (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
-                final SchematicWorld schematic = ClientProxy.schematic;
-                if (schematic != null && schematic.isRendering) {
-                    pickBlock(schematic, ClientProxy.objectMouseOver);
-                }
-            }
+            // TODO: fix schematic pick block
+//            if (this.minecraft.gameSettings.keyBindPickBlock.isPressed() &&
+//                    (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
+//                final SchematicWorld schematic = ClientProxy.schematic;
+//                if (schematic != null && schematic.isRendering) {
+//                    pickBlock(schematic, ClientProxy.objectMouseOver);
+//                }
+//            }
         }
     }
 
