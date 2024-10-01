@@ -6,6 +6,7 @@ import com.github.lunatrius.schematica.api.ISchematic;
 import com.github.lunatrius.schematica.client.printer.SchematicPrinter;
 import com.github.lunatrius.schematica.client.renderer.RenderSchematic;
 import com.github.lunatrius.schematica.client.world.SchematicWorld;
+import com.github.lunatrius.schematica.command.client.CommandSchematicaConfig;
 import com.github.lunatrius.schematica.command.client.CommandSchematicaReplace;
 import com.github.lunatrius.schematica.handler.ConfigurationHandler;
 import com.github.lunatrius.schematica.handler.client.GuiHandler;
@@ -184,6 +185,7 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(new OverlayHandler());
         MinecraftForge.EVENT_BUS.register(new WorldHandler());
 
+        ClientCommandHandler.instance.registerCommand(new CommandSchematicaConfig());
         ClientCommandHandler.instance.registerCommand(new CommandSchematicaReplace());
     }
 

@@ -126,6 +126,14 @@ public final class Names {
             public static final String NAME = "schematicaDownload";
         }
 
+        public static final class Config {
+            public static final class Message {
+                public static final String USAGE = "schematica.command.config.usage";
+            }
+
+            public static final String NAME = "schematicaConfig";
+        }
+
         public static final class Replace {
             public static final class Message {
                 public static final String USAGE = "schematica.command.replace.usage";
