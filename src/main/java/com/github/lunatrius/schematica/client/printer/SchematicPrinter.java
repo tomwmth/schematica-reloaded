@@ -222,7 +222,7 @@ public class SchematicPrinter {
                 this.syncSneaking(player, false);
                 final boolean success = this.minecraft.playerController.onPlayerRightClick(player, world, player.getHeldItem(), realPos, EnumFacing.UP, new Vec3(0, 0, 0));
                 if (success) {
-                    this.timeout[x][y][z] = (byte) ConfigurationHandler.timeout;
+                    this.timeout[x][y][z] = (byte) ConfigurationHandler.changeStateTimeout;
                     return !ConfigurationHandler.placeInstantly;
                 }
             }

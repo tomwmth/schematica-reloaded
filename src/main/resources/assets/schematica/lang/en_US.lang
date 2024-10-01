@@ -134,6 +134,8 @@ schematica.config.loadEnabled.tooltip=Allow players to load schematics.
 # gui - config - reloaded
 schematica.config.changeState=Change State
 schematica.config.changeState.tooltip=Printer will interact with blocks to fix their state when necessary.
+schematica.config.changeStateTimeout=Change State Timeout
+schematica.config.changeStateTimeout.tooltip=Timeout before performing another state change on a single block.
 schematica.config.arrowKeyMove=Arrow Key Move
 schematica.config.arrowKeyMove.tooltip=Pressing the arrow keys will move the currently loaded schematic.
 

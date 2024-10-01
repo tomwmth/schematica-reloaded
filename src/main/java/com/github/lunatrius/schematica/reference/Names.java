@@ -66,6 +66,8 @@ public final class Names {
 
         public static final String CHANGE_STATE = "changeState";
         public static final String CHANGE_STATE_DESC = "Printer will interact with blocks to fix their state when necessary.";
+        public static final String CHANGE_STATE_TIMEOUT = "changeStateTimeout";
+        public static final String CHANGE_STATE_TIMEOUT_DESC = "Timeout before performing another state change on a single block.";
         public static final String ARROW_KEY_MOVE = "arrowKeyMove";
         public static final String ARROW_KEY_MOVE_DESC = "Pressing the arrow keys will move the currently loaded schematic.";
 

@@ -72,6 +72,7 @@ public class ConfigurationHandler {
 
     // region Defaults - Reloaded
     public static final boolean CHANGE_STATE_DEFAULT = true;
+    public static final int CHANGE_STATE_TIMEOUT_DEFAULT = 2;
     public static final boolean ARROW_KEY_MOVE_DEFAULT = true;
     // endregion
 
@@ -116,6 +117,7 @@ public class ConfigurationHandler {
 
     // region Values - Reloaded
     public static boolean changeState = CHANGE_STATE_DEFAULT;
+    public static int changeStateTimeout = CHANGE_STATE_TIMEOUT_DEFAULT;
     public static boolean arrowKeyMove = ARROW_KEY_MOVE_DEFAULT;
     // endregion
 
@@ -159,6 +161,7 @@ public class ConfigurationHandler {
 
     // region Properties - Reloaded
     public static Property propChangeState = null;
+    public static Property propChangeStateTimeout = null;
     public static Property propArrowKeyMove = null;
     // endregion
 
@@ -288,6 +291,10 @@ public class ConfigurationHandler {
         propChangeState = configuration.get(Names.Config.Category.RELOADED, Names.Config.CHANGE_STATE, CHANGE_STATE_DEFAULT, Names.Config.CHANGE_STATE_DESC);
         propChangeState.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.CHANGE_STATE);
         changeState = propChangeState.getBoolean(CHANGE_STATE_DEFAULT);
+
+        propChangeStateTimeout = configuration.get(Names.Config.Category.RELOADED, Names.Config.CHANGE_STATE_TIMEOUT, CHANGE_STATE_TIMEOUT_DEFAULT, Names.Config.CHANGE_STATE_TIMEOUT_DESC, 0, 50);
+        propChangeStateTimeout.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.CHANGE_STATE_TIMEOUT);
+        changeStateTimeout = propChangeStateTimeout.getInt(CHANGE_STATE_TIMEOUT_DEFAULT);
 
         propArrowKeyMove = configuration.get(Names.Config.Category.RELOADED, Names.Config.ARROW_KEY_MOVE, ARROW_KEY_MOVE_DEFAULT, Names.Config.ARROW_KEY_MOVE_DESC);
         propArrowKeyMove.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.ARROW_KEY_MOVE);
