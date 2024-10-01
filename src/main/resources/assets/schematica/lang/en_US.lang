@@ -122,6 +122,8 @@ schematica.config.schematicDirectory=Schematic Directory
 schematica.config.schematicDirectory.tooltip=Schematic directory.
 schematica.config.extraAirBlocks=Extra Air Blocks
 schematica.config.extraAirBlocks.tooltip=Extra blocks to consider as air for the schematic renderer.
+schematica.config.arrowKeyMove=Arrow Key Move
+schematica.config.arrowKeyMove.tooltip=Pressing the arrow keys will move the currently loaded schematic.
 
 # gui - config - server
 schematica.config.printerEnabled=Allow Printer

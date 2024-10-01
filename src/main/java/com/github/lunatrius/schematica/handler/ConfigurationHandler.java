@@ -38,6 +38,7 @@ public class ConfigurationHandler {
     public static final String[] EXTRA_AIR_BLOCKS_DEFAULT = {};
     public static final String SCHEMATIC_DIRECTORY_STR = "./schematics";
     public static final File SCHEMATIC_DIRECTORY_DEFAULT = new File(Schematica.proxy.getDataDirectory(), SCHEMATIC_DIRECTORY_STR);
+    public static final boolean ARROW_KEY_MOVE_DEFAULT = true;
     public static final String SORT_TYPE_DEFAULT = "";
     // endregion
 
@@ -79,6 +80,7 @@ public class ConfigurationHandler {
     // region Values - General
     public static String[] extraAirBlocks = Arrays.copyOf(EXTRA_AIR_BLOCKS_DEFAULT, EXTRA_AIR_BLOCKS_DEFAULT.length);
     public static File schematicDirectory = SCHEMATIC_DIRECTORY_DEFAULT;
+    public static boolean arrowKeyMove = ARROW_KEY_MOVE_DEFAULT;
     public static String sortType = SORT_TYPE_DEFAULT;
     // endregion
 
@@ -119,6 +121,7 @@ public class ConfigurationHandler {
     // region Properties - General
     public static Property propExtraAirBlocks = null;
     public static Property propSchematicDirectory = null;
+    public static Property propArrowKeyMove = null;
     public static Property propSortType = null;
     // endregion
 
@@ -266,6 +269,10 @@ public class ConfigurationHandler {
         propExtraAirBlocks = configuration.get(Names.Config.Category.GENERAL, Names.Config.EXTRA_AIR_BLOCKS, EXTRA_AIR_BLOCKS_DEFAULT, Names.Config.EXTRA_AIR_BLOCKS_DESC);
         propExtraAirBlocks.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.EXTRA_AIR_BLOCKS);
         extraAirBlocks = propExtraAirBlocks.getStringList();
+
+        propArrowKeyMove = configuration.get(Names.Config.Category.GENERAL, Names.Config.ARROW_KEY_MOVE, ARROW_KEY_MOVE_DEFAULT, Names.Config.ARROW_KEY_MOVE_DESC);
+        propArrowKeyMove.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.ARROW_KEY_MOVE);
+        arrowKeyMove = propArrowKeyMove.getBoolean();
 
         propSortType = configuration.get(Names.Config.Category.GENERAL, Names.Config.SORT_TYPE, SORT_TYPE_DEFAULT, Names.Config.SORT_TYPE_DESC);
         propSortType.setShowInGui(false);

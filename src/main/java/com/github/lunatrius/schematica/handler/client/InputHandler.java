@@ -7,15 +7,14 @@ import com.github.lunatrius.schematica.client.printer.SchematicPrinter;
 import com.github.lunatrius.schematica.client.renderer.RenderSchematic;
 import com.github.lunatrius.schematica.client.world.SchematicWorld;
 import com.github.lunatrius.schematica.client.world.SchematicWorld.LayerMode;
+import com.github.lunatrius.schematica.handler.ConfigurationHandler;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.github.lunatrius.schematica.reference.Names;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.*;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -53,6 +52,8 @@ public class InputHandler {
     @SubscribeEvent
     public void onKeyInput(final InputEvent event) {
         if (this.minecraft.currentScreen == null) {
+            final SchematicWorld schematic = ClientProxy.schematic;
+
             if (KEY_BINDING_LOAD.isPressed()) {
                 this.minecraft.displayGuiScreen(new GuiSchematicLoad(this.minecraft.currentScreen));
             }
@@ -66,7 +67,6 @@ public class InputHandler {
             }
 
             if (KEY_BINDING_LAYER_INC.isPressed()) {
-                final SchematicWorld schematic = ClientProxy.schematic;
                 if (schematic != null && schematic.layerMode != LayerMode.ALL) {
                     schematic.renderingLayer = MathHelper.clamp_int(schematic.renderingLayer + 1, 0, schematic.getHeight() - 1);
                     RenderSchematic.INSTANCE.refresh();
@@ -74,7 +74,6 @@ public class InputHandler {
             }
 
             if (KEY_BINDING_LAYER_DEC.isPressed()) {
-                final SchematicWorld schematic = ClientProxy.schematic;
                 if (schematic != null && schematic.layerMode != LayerMode.ALL) {
                     schematic.renderingLayer = MathHelper.clamp_int(schematic.renderingLayer - 1, 0, schematic.getHeight() - 1);
                     RenderSchematic.INSTANCE.refresh();
@@ -82,7 +81,6 @@ public class InputHandler {
             }
 
             if (KEY_BINDING_LAYER_TOGGLE.isPressed()) {
-                final SchematicWorld schematic = ClientProxy.schematic;
                 if (schematic != null) {
                     schematic.layerMode = LayerMode.next(schematic.layerMode);
                     RenderSchematic.INSTANCE.refresh();
@@ -90,7 +88,6 @@ public class InputHandler {
             }
 
             if (KEY_BINDING_RENDER_TOGGLE.isPressed()) {
-                final SchematicWorld schematic = ClientProxy.schematic;
                 if (schematic != null) {
                     schematic.isRendering = !schematic.isRendering;
                     RenderSchematic.INSTANCE.refresh();
@@ -98,18 +95,23 @@ public class InputHandler {
             }
 
             if (KEY_BINDING_PRINTER_TOGGLE.isPressed()) {
-                if (ClientProxy.schematic != null) {
+                if (schematic != null) {
                     final boolean printing = SchematicPrinter.INSTANCE.togglePrinting();
                     this.minecraft.thePlayer.addChatMessage(new ChatComponentTranslation(Names.Messages.TOGGLE_PRINTER, I18n.format(printing ? Names.Gui.ON : Names.Gui.OFF)));
                 }
             }
 
             if (KEY_BINDING_MOVE_HERE.isPressed()) {
-                final SchematicWorld schematic = ClientProxy.schematic;
                 if (schematic != null) {
                     ClientProxy.moveSchematicToPlayer(schematic);
                     RenderSchematic.INSTANCE.refresh();
                 }
+            }
+
+            if (ConfigurationHandler.arrowKeyMove && schematic != null && Keyboard.getEventKeyState()) {
+                final EnumFacing facing = this.minecraft.thePlayer.getHorizontalFacing();
+                final boolean sneaking = this.minecraft.thePlayer.isSneaking();
+                this.handleArrowKey(Keyboard.getEventKey(), facing, sneaking, schematic);
             }
 
             // TODO: fix schematic pick block
@@ -120,6 +122,30 @@ public class InputHandler {
 //                    pickBlock(schematic, ClientProxy.objectMouseOver);
 //                }
 //            }
+        }
+    }
+
+    private void handleArrowKey(final int key, final EnumFacing facing, final boolean sneaking, final SchematicWorld schematic) {
+        EnumFacing moveDirection = null;
+        switch (key) {
+            case Keyboard.KEY_UP:
+                moveDirection = sneaking ? EnumFacing.UP : facing;
+                break;
+            case Keyboard.KEY_DOWN:
+                moveDirection = sneaking ? EnumFacing.DOWN : facing.getOpposite();
+                break;
+            case Keyboard.KEY_LEFT:
+                moveDirection = facing.rotateYCCW();
+                break;
+            case Keyboard.KEY_RIGHT:
+                moveDirection = facing.rotateY();
+                break;
+        }
+
+        if (moveDirection != null) {
+            schematic.position.offset(moveDirection);
+            RenderSchematic.INSTANCE.refresh();
+            SchematicPrinter.INSTANCE.refresh();
         }
     }
 
