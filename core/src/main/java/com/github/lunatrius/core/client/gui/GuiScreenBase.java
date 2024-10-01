@@ -93,4 +93,9 @@ public class GuiScreenBase extends GuiScreen {
             textField.drawTextBox();
         }
     }
+
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
 }
