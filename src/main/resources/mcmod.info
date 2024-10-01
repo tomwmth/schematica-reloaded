@@ -8,18 +8,19 @@
 			"mcversion": "${minecraftVersion}",
 			"version": "${modVersion}",
 			"authorList": [
+				"tomwmth",
 				"Lunatrius",
-				"tomwmth"
+				"Pokechu22"
 			],
 			"credits": "AbrarSyed, AtomicBlom, UltraMoogleMan",
 			"dependants": [  ],
 			"dependencies": [ "Forge@[${forgeVersion},)" ],
 			"parent": "",
 			"requiredMods": [ "Forge@[${forgeVersion},)" ],
-			"logoFile": "/assets/schematica/logo.png",
+			"logoFile": "/assets/${modId}/logo.png",
 			"screenshots": [  ],
 			"updateUrl": "",
-			"url": "https://github.com/tomwmth/Schematica",
+			"url": "https://github.com/tomwmth/schematica-reloaded",
 			"useDependencyInformation": true
 		}
 	]

@@ -18,4 +18,4 @@ pluginManagement {
 
 include("core", "api")
 
-rootProject.name = "Schematica"
+rootProject.name = "Schematica Reloaded"

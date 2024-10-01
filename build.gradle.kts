@@ -104,9 +104,8 @@ tasks.processResources {
     }
 }
 
-tasks.shadowJar {
-    configurations.clear()
-    configurations.add(shade)
+base {
+    archivesName.set("${modId}-mc${minecraftVersion}")
 }
 
 tasks.jar {
@@ -117,13 +116,23 @@ tasks.jar {
     )
 }
 
-tasks.build {
-    dependsOn(tasks.shadowJar)
+tasks.shadowJar {
+    archiveClassifier.set("")
+
+    from(rootProject.file("LICENSE")) {
+        into("META-INF/")
+    }
+
+    from(rootProject.file("NOTICE")) {
+        into("META-INF/")
+    }
+
+    configurations.clear()
+    configurations.add(shade)
 }
 
-val remapJar by tasks.named<net.fabricmc.loom.task.RemapJarTask>("remapJar") {
-    input = tasks.shadowJar.get().archiveFile
-    archiveFileName.set("${modId}-mc${minecraftVersion}-${modVersion}.jar")
+tasks.build {
+    dependsOn(tasks.shadowJar)
 }
 
 tasks.assemble {
