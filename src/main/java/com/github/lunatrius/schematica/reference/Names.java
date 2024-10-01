@@ -70,6 +70,8 @@ public final class Names {
         public static final String CHANGE_STATE_TIMEOUT_DESC = "Timeout before performing another state change on a single block.";
         public static final String ARROW_KEY_MOVE = "arrowKeyMove";
         public static final String ARROW_KEY_MOVE_DESC = "Pressing the arrow keys will move the currently loaded schematic.";
+        public static final String PERSIST_SCHEMATIC = "persistSchematic";
+        public static final String PERSIST_SCHEMATIC_DESC = "Disconnecting from a server will not reset the loaded schematic.";
 
         public static final String LANG_PREFIX = Reference.MOD_ID + ".config";
     }

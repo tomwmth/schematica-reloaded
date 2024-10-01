@@ -74,6 +74,7 @@ public class ConfigurationHandler {
     public static final boolean CHANGE_STATE_DEFAULT = true;
     public static final int CHANGE_STATE_TIMEOUT_DEFAULT = 2;
     public static final boolean ARROW_KEY_MOVE_DEFAULT = true;
+    public static final boolean PERSIST_SCHEMATIC_DEFAULT = true;
     // endregion
 
     // region Values - Debug
@@ -119,6 +120,7 @@ public class ConfigurationHandler {
     public static boolean changeState = CHANGE_STATE_DEFAULT;
     public static int changeStateTimeout = CHANGE_STATE_TIMEOUT_DEFAULT;
     public static boolean arrowKeyMove = ARROW_KEY_MOVE_DEFAULT;
+    public static boolean persistSchematic = PERSIST_SCHEMATIC_DEFAULT;
     // endregion
 
     // region Properties - Debug
@@ -163,6 +165,7 @@ public class ConfigurationHandler {
     public static Property propChangeState = null;
     public static Property propChangeStateTimeout = null;
     public static Property propArrowKeyMove = null;
+    public static Property propPersistSchematic = null;
     // endregion
 
     private static final Set<Block> extraAirBlockList = new HashSet<Block>();
@@ -299,6 +302,10 @@ public class ConfigurationHandler {
         propArrowKeyMove = configuration.get(Names.Config.Category.RELOADED, Names.Config.ARROW_KEY_MOVE, ARROW_KEY_MOVE_DEFAULT, Names.Config.ARROW_KEY_MOVE_DESC);
         propArrowKeyMove.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.ARROW_KEY_MOVE);
         arrowKeyMove = propArrowKeyMove.getBoolean();
+
+        propPersistSchematic = configuration.get(Names.Config.Category.RELOADED, Names.Config.PERSIST_SCHEMATIC, PERSIST_SCHEMATIC_DEFAULT, Names.Config.PERSIST_SCHEMATIC_DESC);
+        propPersistSchematic.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.PERSIST_SCHEMATIC);
+        persistSchematic = propPersistSchematic.getBoolean();
     }
 
     private static File getSchematicDirectoryFile(String path) {

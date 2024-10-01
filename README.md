@@ -16,8 +16,10 @@ This is achieved by adding many of the same features and improvements while stil
   - When enabled, printer will automatically interact with certain blocks to change their state if necessary
   - This works for: Repeaters, Comparators, Levers, Doors, Trap Doors, Fence Gates
 - New "Arrow Key Move" option
-  - When enabled, the arrow keys can be pressed to horizontally move the currently loaded schematic
+  - When enabled, the arrow keys can be pressed to horizontally move the current schematic
   - While sneaking, the up and down arrow will move the schematic vertically
+- New "Persist Schematic" option
+  - When enabled, disconnecting will not unload the current schematic
 - New `/schematicaConfig` command
   - Opens the configuration GUI without needing to go through the FML mod list
 - All changes up until 1.12.2 (the final version) backported to 1.8.9
