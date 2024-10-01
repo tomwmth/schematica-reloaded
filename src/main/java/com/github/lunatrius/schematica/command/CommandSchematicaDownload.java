@@ -19,6 +19,7 @@ import net.minecraft.util.ChatComponentTranslation;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -72,8 +73,14 @@ public class CommandSchematicaDownload extends CommandSchematicaBase {
         final String filename = String.join(" ", args);
         final EntityPlayerMP player = (EntityPlayerMP) sender;
         final File directory = Schematica.proxy.getPlayerSchematicDirectory(player, true);
-        if (!FileUtils.contains(directory, filename)) {
-            Reference.logger.error("{} has tried to download the file {}", player.getName(), filename);
+        try {
+            if (!FileUtils.contains(directory, filename)) {
+                Reference.logger.error("{} has tried to download the file {}", player.getName(), filename);
+                throw new CommandException(Names.Command.Download.Message.DOWNLOAD_FAILED);
+            }
+        }
+        catch (IOException ex) {
+            Reference.logger.error("An unknown error occurred when {} tried to download the file {}", player.getName(), filename, ex);
             throw new CommandException(Names.Command.Download.Message.DOWNLOAD_FAILED);
         }
 

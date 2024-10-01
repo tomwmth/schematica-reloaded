@@ -17,6 +17,7 @@ import net.minecraft.util.IChatComponent;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 @ParametersAreNonnullByDefault
@@ -65,8 +66,14 @@ public class CommandSchematicaRemove extends CommandSchematicaBase {
 
         final File schematicDirectory = Schematica.proxy.getPlayerSchematicDirectory(player, true);
         final File file = new File(schematicDirectory, name);
-        if (!FileUtils.contains(schematicDirectory, file)) {
-            Reference.logger.error("{} has tried to download the file {}", player.getName(), name);
+        try {
+            if (!FileUtils.contains(schematicDirectory, file)) {
+                Reference.logger.error("{} has tried to remove the file {}", player.getName(), name);
+                throw new CommandException(Names.Command.Remove.Message.SCHEMATIC_NOT_FOUND);
+            }
+        }
+        catch (IOException ex) {
+            Reference.logger.error("An unknown error occurred when {} tried to remove the file {}", player.getName(), name, ex);
             throw new CommandException(Names.Command.Remove.Message.SCHEMATIC_NOT_FOUND);
         }
 

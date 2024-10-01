@@ -44,8 +44,6 @@ public abstract class CommonProxy {
     public void preInit(final FMLPreInitializationEvent event) {
         Reference.logger = event.getModLog();
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
-
-        FMLInterModComms.sendMessage("LunatriusCore", "checkUpdate", Reference.FORGE_VERSION);
     }
 
     public void init(final FMLInitializationEvent event) {

@@ -1,7 +1,5 @@
 package com.github.lunatrius.core.util;
 
-import com.github.lunatrius.core.reference.Reference;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -19,18 +17,12 @@ public class FileUtils {
         return String.format("%3.0f %sB", bytes / Math.pow(unit, exp), pre);
     }
 
-    public static boolean contains(final File root, final String filename) {
+    public static boolean contains(final File root, final String filename) throws IOException {
         return contains(root, new File(root, filename));
     }
 
     // http://stackoverflow.com/q/18227634/1166946
-    public static boolean contains(final File root, final File file) {
-        try {
-            return file.getCanonicalPath().startsWith(root.getCanonicalPath() + File.separator);
-        } catch (final IOException e) {
-            Reference.logger.error("", e);
-        }
-
-        return false;
+    public static boolean contains(final File root, final File file) throws IOException {
+        return file.getCanonicalPath().startsWith(root.getCanonicalPath() + File.separator);
     }
 }
