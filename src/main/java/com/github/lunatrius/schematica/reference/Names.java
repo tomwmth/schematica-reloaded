@@ -10,6 +10,7 @@ public final class Names {
             public static final String PRINTER_SWAPSLOTS = "printer.swapslots";
             public static final String GENERAL = "general";
             public static final String SERVER = "server";
+            public static final String RELOADED = "reloaded";
         }
 
         public static final String DUMP_BLOCK_LIST = "dumpBlockList";
@@ -46,15 +47,11 @@ public final class Names {
         public static final String PLACE_ADJACENT_DESC = "Place blocks only if there is an adjacent block next to them.";
         public static final String SWAP_SLOT = "swapSlot";
         public static final String SWAP_SLOT_DESC = "Allow the printer to use this hotbar slot.";
-        public static final String CHANGE_STATE = "changeState";
-        public static final String CHANGE_STATE_DESC = "Interact with blocks to fix their state when necessary.";
 
         public static final String SCHEMATIC_DIRECTORY = "schematicDirectory";
         public static final String SCHEMATIC_DIRECTORY_DESC = "Schematic directory.";
         public static final String EXTRA_AIR_BLOCKS = "extraAirBlocks";
         public static final String EXTRA_AIR_BLOCKS_DESC = "Extra blocks to consider as air for the schematic renderer.";
-        public static final String ARROW_KEY_MOVE = "arrowKeyMove";
-        public static final String ARROW_KEY_MOVE_DESC = "Pressing the arrow keys will move the currently loaded schematic.";
         public static final String SORT_TYPE = "sortType";
         public static final String SORT_TYPE_DESC = "Default sort type for the material list.";
 
@@ -64,9 +61,13 @@ public final class Names {
         public static final String SAVE_ENABLED_DESC = "Allow players to save schematics.";
         public static final String LOAD_ENABLED = "loadEnabled";
         public static final String LOAD_ENABLED_DESC = "Allow players to load schematics.";
-
         public static final String PLAYER_QUOTA_KILOBYTES = "playerQuotaKilobytes";
         public static final String PLAYER_QUOTA_KILOBYTES_DESC = "Amount of storage provided per-player for schematics on the server.";
+
+        public static final String CHANGE_STATE = "changeState";
+        public static final String CHANGE_STATE_DESC = "Printer will interact with blocks to fix their state when necessary.";
+        public static final String ARROW_KEY_MOVE = "arrowKeyMove";
+        public static final String ARROW_KEY_MOVE_DESC = "Pressing the arrow keys will move the currently loaded schematic.";
 
         public static final String LANG_PREFIX = Reference.MOD_ID + ".config";
     }

@@ -38,7 +38,6 @@ public class ConfigurationHandler {
     public static final String[] EXTRA_AIR_BLOCKS_DEFAULT = {};
     public static final String SCHEMATIC_DIRECTORY_STR = "./schematics";
     public static final File SCHEMATIC_DIRECTORY_DEFAULT = new File(Schematica.proxy.getDataDirectory(), SCHEMATIC_DIRECTORY_STR);
-    public static final boolean ARROW_KEY_MOVE_DEFAULT = true;
     public static final String SORT_TYPE_DEFAULT = "";
     // endregion
 
@@ -53,7 +52,6 @@ public class ConfigurationHandler {
     public static final int PLACE_DELAY_DEFAULT = 1;
     public static final int PLACE_DISTANCE_DEFAULT = 5;
     public static final int TIMEOUT_DEFAULT = 10;
-    public static final boolean CHANGE_STATE_DEFAULT = true;
     // endregion
 
     // region Defaults - Rendering
@@ -72,6 +70,11 @@ public class ConfigurationHandler {
     public static final int PLAYER_QUOTA_KILOBYTES_DEFAULT = 8192;
     // endregion
 
+    // region Defaults - Reloaded
+    public static final boolean CHANGE_STATE_DEFAULT = true;
+    public static final boolean ARROW_KEY_MOVE_DEFAULT = true;
+    // endregion
+
     // region Values - Debug
     public static boolean showDebugInfo = SHOW_DEBUG_INFO_DEFAULT;
     public static boolean dumpBlockList = DUMP_BLOCK_LIST_DEFAULT;
@@ -80,7 +83,6 @@ public class ConfigurationHandler {
     // region Values - General
     public static String[] extraAirBlocks = Arrays.copyOf(EXTRA_AIR_BLOCKS_DEFAULT, EXTRA_AIR_BLOCKS_DEFAULT.length);
     public static File schematicDirectory = SCHEMATIC_DIRECTORY_DEFAULT;
-    public static boolean arrowKeyMove = ARROW_KEY_MOVE_DEFAULT;
     public static String sortType = SORT_TYPE_DEFAULT;
     // endregion
 
@@ -94,7 +96,6 @@ public class ConfigurationHandler {
     public static int placeDelay = PLACE_DELAY_DEFAULT;
     public static int placeDistance = PLACE_DISTANCE_DEFAULT;
     public static int timeout = TIMEOUT_DEFAULT;
-    public static boolean changeState = CHANGE_STATE_DEFAULT;
     // endregion
 
     // region Values - Rendering
@@ -113,6 +114,11 @@ public class ConfigurationHandler {
     public static int playerQuotaKilobytes = PLAYER_QUOTA_KILOBYTES_DEFAULT;
     // endregion
 
+    // region Values - Reloaded
+    public static boolean changeState = CHANGE_STATE_DEFAULT;
+    public static boolean arrowKeyMove = ARROW_KEY_MOVE_DEFAULT;
+    // endregion
+
     // region Properties - Debug
     public static Property propShowDebugInfo = null;
     public static Property propDumpBlockList = null;
@@ -121,7 +127,6 @@ public class ConfigurationHandler {
     // region Properties - General
     public static Property propExtraAirBlocks = null;
     public static Property propSchematicDirectory = null;
-    public static Property propArrowKeyMove = null;
     public static Property propSortType = null;
     // endregion
 
@@ -134,7 +139,6 @@ public class ConfigurationHandler {
     public static Property propPlaceDelay = null;
     public static Property propPlaceDistance = null;
     public static Property propTimeout = null;
-    public static Property propChangeState = null;
     // endregion
 
     // region Properties - Rendering
@@ -153,6 +157,11 @@ public class ConfigurationHandler {
     public static Property propPlayerQuotaKilobytes = null;
     // endregion
 
+    // region Properties - Reloaded
+    public static Property propChangeState = null;
+    public static Property propArrowKeyMove = null;
+    // endregion
+
     private static final Set<Block> extraAirBlockList = new HashSet<Block>();
 
     public static void init(final File configFile) {
@@ -169,6 +178,7 @@ public class ConfigurationHandler {
         loadConfigurationPrinter();
         loadConfigurationRender();
         loadConfigurationServer();
+        loadConfigurationReloaded();
 
         Schematica.proxy.createFolders();
 
@@ -242,10 +252,6 @@ public class ConfigurationHandler {
         propPlaceAdjacent = configuration.get(Names.Config.Category.PRINTER, Names.Config.PLACE_ADJACENT, PLACE_ADJACENT_DEFAULT, Names.Config.PLACE_ADJACENT_DESC);
         propPlaceAdjacent.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.PLACE_ADJACENT);
         placeAdjacent = propPlaceAdjacent.getBoolean(PLACE_ADJACENT_DEFAULT);
-
-        propChangeState = configuration.get(Names.Config.Category.PRINTER, Names.Config.CHANGE_STATE, CHANGE_STATE_DEFAULT, Names.Config.CHANGE_STATE_DESC);
-        propChangeState.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.CHANGE_STATE);
-        changeState = propChangeState.getBoolean(CHANGE_STATE_DEFAULT);
     }
 
     private static void loadConfigurationSwapSlots() {
@@ -270,16 +276,22 @@ public class ConfigurationHandler {
         propExtraAirBlocks.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.EXTRA_AIR_BLOCKS);
         extraAirBlocks = propExtraAirBlocks.getStringList();
 
-        propArrowKeyMove = configuration.get(Names.Config.Category.GENERAL, Names.Config.ARROW_KEY_MOVE, ARROW_KEY_MOVE_DEFAULT, Names.Config.ARROW_KEY_MOVE_DESC);
-        propArrowKeyMove.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.ARROW_KEY_MOVE);
-        arrowKeyMove = propArrowKeyMove.getBoolean();
-
         propSortType = configuration.get(Names.Config.Category.GENERAL, Names.Config.SORT_TYPE, SORT_TYPE_DEFAULT, Names.Config.SORT_TYPE_DESC);
         propSortType.setShowInGui(false);
         sortType = propSortType.getString();
 
         normalizeSchematicPath();
         populateExtraAirBlocks();
+    }
+
+    private static void loadConfigurationReloaded() {
+        propChangeState = configuration.get(Names.Config.Category.RELOADED, Names.Config.CHANGE_STATE, CHANGE_STATE_DEFAULT, Names.Config.CHANGE_STATE_DESC);
+        propChangeState.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.CHANGE_STATE);
+        changeState = propChangeState.getBoolean(CHANGE_STATE_DEFAULT);
+
+        propArrowKeyMove = configuration.get(Names.Config.Category.RELOADED, Names.Config.ARROW_KEY_MOVE, ARROW_KEY_MOVE_DEFAULT, Names.Config.ARROW_KEY_MOVE_DESC);
+        propArrowKeyMove.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.ARROW_KEY_MOVE);
+        arrowKeyMove = propArrowKeyMove.getBoolean();
     }
 
     private static File getSchematicDirectoryFile(String path) {
