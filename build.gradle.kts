@@ -4,7 +4,7 @@ plugins {
     id("java")
     id("gg.essential.loom") version "1.6.+"
     id("dev.architectury.architectury-pack200") version "0.1.3"
-    id("com.gradleup.shadow") version ("8.3.2")
+    id("com.gradleup.shadow") version ("8.3.3")
     id("net.kyori.blossom") version ("1.3.1")
 }
 
@@ -117,8 +117,6 @@ tasks.jar {
 }
 
 tasks.shadowJar {
-    archiveClassifier.set("")
-
     from(rootProject.file("LICENSE")) {
         into("META-INF/")
     }
@@ -131,8 +129,8 @@ tasks.shadowJar {
     configurations.add(shade)
 }
 
-tasks.build {
-    dependsOn(tasks.shadowJar)
+tasks.remapJar {
+    input = tasks.shadowJar.get().archiveFile
 }
 
 tasks.assemble {
