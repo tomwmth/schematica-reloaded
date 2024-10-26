@@ -8,7 +8,7 @@ import com.github.lunatrius.schematica.client.renderer.RenderSchematic;
 import com.github.lunatrius.schematica.client.world.SchematicWorld;
 import com.github.lunatrius.schematica.command.client.CommandSchematicaConfig;
 import com.github.lunatrius.schematica.command.client.CommandSchematicaReplace;
-import com.github.lunatrius.schematica.handler.ConfigurationHandler;
+import com.github.lunatrius.schematica.config.Configuration;
 import com.github.lunatrius.schematica.handler.client.GuiHandler;
 import com.github.lunatrius.schematica.handler.client.InputHandler;
 import com.github.lunatrius.schematica.handler.client.OverlayHandler;
@@ -25,8 +25,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Property;
-import net.minecraftforge.fml.client.config.GuiConfigEntries;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -155,19 +153,6 @@ public class ClientProxy extends CommonProxy {
     public void preInit(final FMLPreInitializationEvent event) {
         super.preInit(event);
 
-        final Property[] sliders = {
-                ConfigurationHandler.propAlpha,
-                ConfigurationHandler.propBlockDelta,
-                ConfigurationHandler.propRenderDistance,
-                ConfigurationHandler.propPlaceDelay,
-                ConfigurationHandler.propTimeout,
-                ConfigurationHandler.propPlaceDistance,
-                ConfigurationHandler.propChangeStateTimeout
-        };
-        for (final Property prop : sliders) {
-            prop.setConfigEntryClass(GuiConfigEntries.NumberSliderEntry.class);
-        }
-
         for (final KeyBinding keyBinding : InputHandler.KEY_BINDINGS) {
             ClientRegistry.registerKeyBinding(keyBinding);
         }
@@ -180,7 +165,6 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(InputHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(TickHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(RenderTickHandler.INSTANCE);
-        MinecraftForge.EVENT_BUS.register(ConfigurationHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(RenderSchematic.INSTANCE);
         MinecraftForge.EVENT_BUS.register(GuiHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(new OverlayHandler());
@@ -259,6 +243,6 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public File getPlayerSchematicDirectory(final EntityPlayer player, final boolean privateDirectory) {
-        return ConfigurationHandler.schematicDirectory;
+        return Configuration.general.getSchematicDirectory().toFile();
     }
 }

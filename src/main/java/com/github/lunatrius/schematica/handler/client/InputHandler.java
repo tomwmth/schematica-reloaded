@@ -7,7 +7,7 @@ import com.github.lunatrius.schematica.client.printer.SchematicPrinter;
 import com.github.lunatrius.schematica.client.renderer.RenderSchematic;
 import com.github.lunatrius.schematica.client.world.SchematicWorld;
 import com.github.lunatrius.schematica.client.world.SchematicWorld.LayerMode;
-import com.github.lunatrius.schematica.handler.ConfigurationHandler;
+import com.github.lunatrius.schematica.config.Configuration;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.github.lunatrius.schematica.reference.Names;
 import net.minecraft.client.Minecraft;
@@ -108,7 +108,7 @@ public class InputHandler {
                 }
             }
 
-            if (ConfigurationHandler.arrowKeyMove && schematic != null && Keyboard.getEventKeyState()) {
+            if (Configuration.general.arrowKeyMove.getValue() && schematic != null && Keyboard.getEventKeyState()) {
                 final EnumFacing facing = this.minecraft.thePlayer.getHorizontalFacing();
                 final boolean sneaking = this.minecraft.thePlayer.isSneaking();
                 this.handleArrowKey(Keyboard.getEventKey(), facing, sneaking, schematic);

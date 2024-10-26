@@ -1,7 +1,7 @@
 package com.github.lunatrius.schematica.command.client;
 
 import com.github.lunatrius.core.handler.DelayedGuiDisplayTicker;
-import com.github.lunatrius.schematica.client.gui.config.GuiFactory;
+import com.github.lunatrius.schematica.client.gui.config.GuiConfiguration;
 import com.github.lunatrius.schematica.command.CommandSchematicaBase;
 import com.github.lunatrius.schematica.reference.Names;
 import net.minecraft.command.ICommandSender;
@@ -26,6 +26,6 @@ public final class CommandSchematicaConfig extends CommandSchematicaBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
-        DelayedGuiDisplayTicker.create(new GuiFactory.GuiModConfig(null), 1);
+        DelayedGuiDisplayTicker.create(new GuiConfiguration(null), 1);
     }
 }

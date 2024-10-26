@@ -3,7 +3,7 @@ package com.github.lunatrius.schematica.client.gui.save;
 import com.github.lunatrius.core.client.gui.GuiNumericField;
 import com.github.lunatrius.core.client.gui.GuiScreenBase;
 import com.github.lunatrius.schematica.Schematica;
-import com.github.lunatrius.schematica.handler.ConfigurationHandler;
+import com.github.lunatrius.schematica.config.Configuration;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.github.lunatrius.schematica.reference.Constants;
 import com.github.lunatrius.schematica.reference.Names;
@@ -174,12 +174,12 @@ public class GuiSchematicSave extends GuiScreenBase {
             } else if (guiButton.id == this.btnSave.id) {
                 final String path = this.tfFilename.getText() + SchematicFormat.getExtension(this.format);
                 if (ClientProxy.isRenderingGuide) {
-                    if (Schematica.proxy.saveSchematic(this.mc.thePlayer, ConfigurationHandler.schematicDirectory, path, this.mc.theWorld, this.format, ClientProxy.pointMin, ClientProxy.pointMax)) {
+                    if (Schematica.proxy.saveSchematic(this.mc.thePlayer, Configuration.general.getSchematicDirectory().toFile(), path, this.mc.theWorld, this.format, ClientProxy.pointMin, ClientProxy.pointMax)) {
                         this.filename = "";
                         this.tfFilename.setText(this.filename);
                     }
                 } else {
-                    SchematicFormat.writeToFileAndNotify(new File(ConfigurationHandler.schematicDirectory, path), this.format, ClientProxy.schematic.getSchematic(), this.mc.thePlayer);
+                    SchematicFormat.writeToFileAndNotify(new File(Configuration.general.getSchematicDirectory().toFile(), path), this.format, ClientProxy.schematic.getSchematic(), this.mc.thePlayer);
                 }
             }
         }
@@ -227,7 +227,7 @@ public class GuiSchematicSave extends GuiScreenBase {
     private String nextFormat() {
         if (this.formatIterator == null) {
             // First time; prime it so that it just returned the default value
-            assert SchematicFormat.FORMATS.size() > 0 : "No formats are defined!";
+            assert !SchematicFormat.FORMATS.isEmpty() : "No formats are defined!";
             assert SchematicFormat.FORMATS.containsKey(SchematicFormat.FORMAT_DEFAULT) : "The default format does not exist!";
 
             this.formatIterator = SchematicFormat.FORMATS.keySet().iterator();

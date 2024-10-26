@@ -4,7 +4,9 @@ import com.github.lunatrius.core.client.gui.GuiScreenBase;
 import com.github.lunatrius.schematica.Schematica;
 import com.github.lunatrius.schematica.client.util.BlockList;
 import com.github.lunatrius.schematica.client.world.SchematicWorld;
-import com.github.lunatrius.schematica.handler.ConfigurationHandler;
+import com.github.lunatrius.schematica.config.Configuration;
+import com.github.lunatrius.schematica.config.ConfigurationManager;
+import com.github.lunatrius.schematica.config.property.EnumProperty;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.github.lunatrius.schematica.reference.Names;
 import com.github.lunatrius.schematica.reference.Reference;
@@ -20,14 +22,14 @@ import org.apache.commons.io.IOUtils;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Formatter;
 import java.util.List;
 
 public class GuiSchematicMaterials extends GuiScreenBase {
     private GuiSchematicMaterialsSlot guiSchematicMaterialsSlot;
 
-    private ItemStackSortType sortType = ItemStackSortType.fromString(ConfigurationHandler.sortType);
+    private final EnumProperty<ItemStackSortType> sortTypeProp = Configuration.general.sortType;
 
     private GuiUnicodeGlyphButton btnSort = null;
     private GuiButton btnDump = null;
@@ -43,14 +45,15 @@ public class GuiSchematicMaterials extends GuiScreenBase {
         final Minecraft minecraft = Minecraft.getMinecraft();
         final SchematicWorld schematic = ClientProxy.schematic;
         this.blockList = new BlockList().getList(minecraft.thePlayer, schematic, minecraft.theWorld);
-        this.sortType.sort(this.blockList);
+        this.sortTypeProp.getValue().sort(this.blockList);
     }
 
     @Override
     public void initGui() {
         int id = 0;
 
-        this.btnSort = new GuiUnicodeGlyphButton(++id, this.width / 2 - 154, this.height - 30, 100, 20, " " + I18n.format(Names.Gui.Control.SORT_PREFIX + this.sortType.label), this.sortType.glyph, 2.0f);
+        final ItemStackSortType sortType = this.sortTypeProp.getValue();
+        this.btnSort = new GuiUnicodeGlyphButton(++id, this.width / 2 - 154, this.height - 30, 100, 20, " " + I18n.format(Names.Gui.Control.SORT_PREFIX + sortType.label), sortType.glyph, 2.0f);
         this.buttonList.add(this.btnSort);
 
         this.btnDump = new GuiButton(++id, this.width / 2 - 50, this.height - 30, 100, 20, I18n.format(Names.Gui.Control.DUMP));
@@ -72,13 +75,13 @@ public class GuiSchematicMaterials extends GuiScreenBase {
     protected void actionPerformed(final GuiButton guiButton) {
         if (guiButton.enabled) {
             if (guiButton.id == this.btnSort.id) {
-                this.sortType = this.sortType.next();
-                this.sortType.sort(this.blockList);
-                this.btnSort.displayString = " " + I18n.format(Names.Gui.Control.SORT_PREFIX + this.sortType.label);
-                this.btnSort.glyph = this.sortType.glyph;
+                this.sortTypeProp.setValue(this.sortTypeProp.getValue().next());
+                final ItemStackSortType newType = this.sortTypeProp.getValue();
+                newType.sort(this.blockList);
+                this.btnSort.displayString = " " + I18n.format(Names.Gui.Control.SORT_PREFIX + newType.label);
+                this.btnSort.glyph = newType.glyph;
 
-                ConfigurationHandler.propSortType.set(String.valueOf(this.sortType));
-                ConfigurationHandler.loadConfiguration();
+                ConfigurationManager.save();
             } else if (guiButton.id == this.btnDump.id) {
                 dumpMaterialList(this.blockList);
             } else if (guiButton.id == this.btnDone.id) {
@@ -104,7 +107,7 @@ public class GuiSchematicMaterials extends GuiScreenBase {
     }
 
     private void dumpMaterialList(final List<BlockList.WrappedItemStack> blockList) {
-        if (blockList.size() <= 0) {
+        if (blockList.isEmpty()) {
             return;
         }
 
@@ -131,7 +134,7 @@ public class GuiSchematicMaterials extends GuiScreenBase {
         final File dumps = Schematica.proxy.getDirectory("dumps");
         try {
             try (FileOutputStream outputStream = new FileOutputStream(new File(dumps, Reference.MOD_ID + "-materials.txt"))) {
-                IOUtils.write(stringBuilder.toString(), outputStream, Charset.forName("utf-8"));
+                IOUtils.write(stringBuilder.toString(), outputStream, StandardCharsets.UTF_8);
             }
         } catch (final Exception e) {
             Reference.logger.error("Could not dump the material list!", e);

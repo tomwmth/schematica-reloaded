@@ -119,7 +119,7 @@ schematica.config.swapSlot8.tooltip=Allow the printer to use the hotbar slot 9.
 
 # gui - config - general
 schematica.config.schematicDirectory=Schematic Directory
-schematica.config.schematicDirectory.tooltip=Schematic directory.
+schematica.config.schematicDirectory.tooltip=The directory which schematic files are loaded from and stored in.
 schematica.config.extraAirBlocks=Extra Air Blocks
 schematica.config.extraAirBlocks.tooltip=Extra blocks to consider as air for the schematic renderer.
 
@@ -130,6 +130,8 @@ schematica.config.saveEnabled=Allow Saving
 schematica.config.saveEnabled.tooltip=Allow players to save schematics.
 schematica.config.loadEnabled=Allow Loading
 schematica.config.loadEnabled.tooltip=Allow players to load schematics.
+schematica.config.playerQuota=Player Quota
+schematica.config.playerQuota.tooltip=Amount of storage provided per-player for schematics on the server.
 
 # gui - config - reloaded
 schematica.config.changeState=Change State

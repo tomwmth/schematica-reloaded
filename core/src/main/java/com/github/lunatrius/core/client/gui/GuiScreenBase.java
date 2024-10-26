@@ -25,23 +25,24 @@ public class GuiScreenBase extends GuiScreen {
     @Override
     public void initGui() {
         this.buttonList.clear();
+        this.labelList.clear();
         this.textFields.clear();
     }
 
     @Override
-    protected void mouseClicked(final int mouseX, final int mouseY, final int mouseEvent) throws IOException {
+    protected void mouseClicked(final int mouseX, final int mouseY, final int mouseButton) throws IOException {
         for (final GuiButton button : this.buttonList) {
             if (button instanceof GuiNumericField) {
                 final GuiNumericField numericField = (GuiNumericField) button;
-                numericField.mouseClicked(mouseX, mouseY, mouseEvent);
+                numericField.mouseClicked(mouseX, mouseY, mouseButton);
             }
         }
 
         for (final GuiTextField textField : this.textFields) {
-            textField.mouseClicked(mouseX, mouseY, mouseEvent);
+            textField.mouseClicked(mouseX, mouseY, mouseButton);
         }
 
-        super.mouseClicked(mouseX, mouseY, mouseEvent);
+        super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override

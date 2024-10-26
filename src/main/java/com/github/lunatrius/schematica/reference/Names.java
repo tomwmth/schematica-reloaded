@@ -11,6 +11,8 @@ public final class Names {
             public static final String GENERAL = "general";
             public static final String SERVER = "server";
             public static final String RELOADED = "reloaded";
+
+            public static final String LANG_PREFIX = Config.LANG_PREFIX + ".category";
         }
 
         public static final String DUMP_BLOCK_LIST = "dumpBlockList";
@@ -61,7 +63,7 @@ public final class Names {
         public static final String SAVE_ENABLED_DESC = "Allow players to save schematics.";
         public static final String LOAD_ENABLED = "loadEnabled";
         public static final String LOAD_ENABLED_DESC = "Allow players to load schematics.";
-        public static final String PLAYER_QUOTA_KILOBYTES = "playerQuotaKilobytes";
+        public static final String PLAYER_QUOTA_KILOBYTES = "playerQuota";
         public static final String PLAYER_QUOTA_KILOBYTES_DESC = "Amount of storage provided per-player for schematics on the server.";
 
         public static final String CHANGE_STATE = "changeState";

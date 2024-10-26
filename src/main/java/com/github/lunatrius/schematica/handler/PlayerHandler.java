@@ -1,5 +1,6 @@
 package com.github.lunatrius.schematica.handler;
 
+import com.github.lunatrius.schematica.config.Configuration;
 import com.github.lunatrius.schematica.network.PacketHandler;
 import com.github.lunatrius.schematica.network.message.MessageCapabilities;
 import com.github.lunatrius.schematica.reference.Reference;
@@ -16,7 +17,11 @@ public class PlayerHandler {
     public void onPlayerLoggedIn(final PlayerEvent.PlayerLoggedInEvent event) {
         if (event.player instanceof EntityPlayerMP) {
             try {
-                PacketHandler.INSTANCE.sendTo(new MessageCapabilities(ConfigurationHandler.printerEnabled, ConfigurationHandler.saveEnabled, ConfigurationHandler.loadEnabled), (EntityPlayerMP) event.player);
+                PacketHandler.INSTANCE.sendTo(new MessageCapabilities(
+                        Configuration.server.printerEnabled.getValue(),
+                        Configuration.server.saveEnabled.getValue(),
+                        Configuration.server.loadEnabled.getValue()
+                ), (EntityPlayerMP) event.player);
             } catch (final Exception ex) {
                 Reference.logger.error("Failed to send capabilities!", ex);
             }

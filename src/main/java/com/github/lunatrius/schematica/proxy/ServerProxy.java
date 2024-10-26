@@ -1,7 +1,7 @@
 package com.github.lunatrius.schematica.proxy;
 
 import com.github.lunatrius.schematica.command.CommandSchematicaDownload;
-import com.github.lunatrius.schematica.handler.ConfigurationHandler;
+import com.github.lunatrius.schematica.config.Configuration;
 import com.github.lunatrius.schematica.handler.PlayerHandler;
 import com.github.lunatrius.schematica.reference.Reference;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,7 +60,7 @@ public class ServerProxy extends CommonProxy {
         //Space used by public directory
         schematicDirectory = getPlayerSchematicDirectory(player, false);
         spaceUsed += getSpaceUsedByDirectory(schematicDirectory);
-        return ((spaceUsed / 1024) > ConfigurationHandler.playerQuotaKilobytes);
+        return ((spaceUsed / 1024) > Configuration.server.playerQuota.getValue());
     }
 
     private int getSpaceUsedByDirectory(final File directory) {
@@ -88,7 +88,7 @@ public class ServerProxy extends CommonProxy {
             return null;
         }
 
-        final File playerDir = new File(ConfigurationHandler.schematicDirectory.getAbsolutePath(), playerId.toString());
+        final File playerDir = Configuration.general.getSchematicDirectory().resolve("./" + playerId).toFile();
         if (privateDirectory) {
             return new File(playerDir, "private");
         } else {

@@ -5,7 +5,8 @@ import com.github.lunatrius.schematica.api.ISchematic;
 import com.github.lunatrius.schematica.command.CommandSchematicaList;
 import com.github.lunatrius.schematica.command.CommandSchematicaRemove;
 import com.github.lunatrius.schematica.command.CommandSchematicaSave;
-import com.github.lunatrius.schematica.handler.ConfigurationHandler;
+import com.github.lunatrius.schematica.config.Configuration;
+import com.github.lunatrius.schematica.config.ConfigurationManager;
 import com.github.lunatrius.schematica.handler.DownloadHandler;
 import com.github.lunatrius.schematica.handler.QueueTickHandler;
 import com.github.lunatrius.schematica.nbt.NBTConversionException;
@@ -26,13 +27,14 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -43,7 +45,7 @@ public abstract class CommonProxy {
 
     public void preInit(final FMLPreInitializationEvent event) {
         Reference.logger = event.getModLog();
-        ConfigurationHandler.init(event.getSuggestedConfigurationFile());
+        ConfigurationManager.init(event.getSuggestedConfigurationFile());
     }
 
     public void init(final FMLInitializationEvent event) {
@@ -63,9 +65,13 @@ public abstract class CommonProxy {
     }
 
     public void createFolders() {
-        if (!ConfigurationHandler.schematicDirectory.exists()) {
-            if (!ConfigurationHandler.schematicDirectory.mkdirs()) {
-                Reference.logger.warn("Could not create schematic directory [{}]!", ConfigurationHandler.schematicDirectory.getAbsolutePath());
+        final Path schematicDir = Configuration.general.getSchematicDirectory();
+        if (Files.notExists(schematicDir)) {
+            try {
+                Files.createDirectories(schematicDir);
+            }
+            catch (IOException ex) {
+                Reference.logger.warn("Could not create schematic directory [{}]", schematicDir.toAbsolutePath(), ex);
             }
         }
     }
@@ -84,8 +90,9 @@ public abstract class CommonProxy {
 
         try {
             return subDirectory.getCanonicalFile();
-        } catch (final IOException e) {
-            e.printStackTrace();
+        }
+        catch (IOException ex) {
+            Reference.logger.error("Failed to get directory", ex);
         }
 
         return subDirectory;
