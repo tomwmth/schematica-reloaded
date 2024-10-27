@@ -14,4 +14,8 @@ public abstract class PropertyButton<T extends Property<?>> extends GuiButton {
         super(buttonId, x, y, widthIn, heightIn, buttonText);
         this.property = property;
     }
+
+    public T getProperty() {
+        return this.property;
+    }
 }

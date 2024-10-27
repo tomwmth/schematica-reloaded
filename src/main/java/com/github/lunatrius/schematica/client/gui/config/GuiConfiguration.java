@@ -85,6 +85,9 @@ public final class GuiConfiguration extends GuiScreenBase {
             else if (property instanceof BlockListProperty) {
                 button = new BlockListButton((BlockListProperty) property, id, propertyX + PROPERTY_LABEL_WIDTH, propertyY, totalCategoryLength - PROPERTY_LABEL_WIDTH - PROPERTY_PADDING, PROPERTY_HEIGHT, this.fontRendererObj);
             }
+            else if (property instanceof SwapSlotsProperty) {
+                button = new SwapSlotsButton((SwapSlotsProperty) property, id, propertyX + PROPERTY_LABEL_WIDTH, propertyY, totalCategoryLength - PROPERTY_LABEL_WIDTH - PROPERTY_PADDING, PROPERTY_HEIGHT);
+            }
 
             if (button != null) {
                 propertyY += PROPERTY_HEIGHT + PROPERTY_PADDING;
@@ -114,10 +117,12 @@ public final class GuiConfiguration extends GuiScreenBase {
                 final Property<?> property = this.propertyMap.get(label.field_175204_i);
                 if (property != null) {
                     final List<String> hoverLines = Lists.newArrayList(
-                            EnumChatFormatting.GRAY + I18n.format(property.getTranslationKey() + ".tooltip"),
-                            "",
-                            EnumChatFormatting.YELLOW + "Default value: " + EnumChatFormatting.ITALIC + property.getDefaultValue().toString()
+                            EnumChatFormatting.GRAY + I18n.format(property.getTranslationKey() + ".tooltip")
                     );
+                    if (!(property instanceof SwapSlotsProperty)) {
+                        hoverLines.add("");
+                        hoverLines.add(EnumChatFormatting.YELLOW + "Default value: " + EnumChatFormatting.ITALIC + property.getDefaultValue().toString());
+                    }
                     GuiUtils.drawHoveringText(hoverLines, mouseX, mouseY, this.width, this.height, HOVER_OVERLAY_WIDTH, this.fontRendererObj);
                 }
             }
@@ -132,6 +137,12 @@ public final class GuiConfiguration extends GuiScreenBase {
             if (id >= 0 && id < categories.length) {
                 this.selectedCategory = categories[id];
                 this.initGui();
+            }
+            else {
+                if (button instanceof SwapSlotsButton) {
+                    final SwapSlotsButton b = (SwapSlotsButton) button;
+                    this.mc.displayGuiScreen(new GuiSwapSlots(this, b.getProperty()));
+                }
             }
         }
     }

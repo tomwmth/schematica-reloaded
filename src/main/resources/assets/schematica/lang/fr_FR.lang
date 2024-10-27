@@ -12,6 +12,10 @@ schematica.gui.south=Sud
 schematica.gui.west=Ouest
 schematica.gui.east=Est
 
+# gui - general - config
+schematica.gui.swapSlot.title=Slots de la Hotbar
+schematica.gui.swapSlot.edit=Modifier des slots d'échange...
+
 # gui - general - load
 schematica.gui.title=Sélectionner un schematic
 schematica.gui.folderInfo=(Placez vos schematics ici)
@@ -50,8 +54,6 @@ schematica.config.category.render=Rendu
 schematica.config.category.render.tooltip=Paramètres de rendu.
 schematica.config.category.printer=Mode imprimante
 schematica.config.category.printer.tooltip=Paramètres du mode imprimante.
-schematica.config.category.printer.swapslots=Slots de la Hotbar
-schematica.config.category.printer.swapslots.tooltip=Autorise le mode imprimante à utiliser des slots de la Hotbar non vides.
 schematica.config.category.general=Général
 schematica.config.category.general.tooltip=Paramètres généraux.
 schematica.config.category.server=Serveur
@@ -92,6 +94,8 @@ schematica.config.destroyInstantly=Destruction instantanée
 schematica.config.destroyInstantly.tooltip=Détruit tous les blocks pouvant être détruits en un tick.
 schematica.config.placeAdjacent=Placer Seulement les Adjacents
 schematica.config.placeAdjacent.tooltip=Place les blocks seulement s'il y a un block adjacent à côté d'eux.
+schematica.config.swapSlot=Échanger des slots
+schematica.config.swapSlot.tooltip=Autorise le mode imprimante à utiliser des slots de la Hotbar non vides.
 
 # gui - config - printer - swap slots
 schematica.config.swapSlot0=Autoriser le Slot 1

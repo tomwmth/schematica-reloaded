@@ -7,10 +7,8 @@ public final class Names {
             public static final String DEBUG = "debug";
             public static final String RENDER = "render";
             public static final String PRINTER = "printer";
-            public static final String PRINTER_SWAPSLOTS = "printer.swapslots";
             public static final String GENERAL = "general";
             public static final String SERVER = "server";
-            public static final String RELOADED = "reloaded";
 
             public static final String LANG_PREFIX = Config.LANG_PREFIX + ".category";
         }
@@ -47,7 +45,7 @@ public final class Names {
         public static final String DESTROY_INSTANTLY_DESC = "Destroy all blocks that can be destroyed in one tick.";
         public static final String PLACE_ADJACENT = "placeAdjacent";
         public static final String PLACE_ADJACENT_DESC = "Place blocks only if there is an adjacent block next to them.";
-        public static final String SWAP_SLOT = "swapSlot";
+        public static final String SWAP_SLOTS = "swapSlot";
         public static final String SWAP_SLOT_DESC = "Allow the printer to use this hotbar slot.";
 
         public static final String SCHEMATIC_DIRECTORY = "schematicDirectory";
@@ -161,6 +159,11 @@ public final class Names {
     }
 
     public static final class Gui {
+        public static final class Config {
+            public static final String SWAP_SLOTS_TITLE = "schematica.gui.swapSlot.title";
+            public static final String SWAP_SLOTS_EDIT = "schematica.gui.swapSlot.edit";
+        }
+
         public static final class Load {
             public static final String TITLE = "schematica.gui.title";
             public static final String FOLDER_INFO = "schematica.gui.folderInfo";

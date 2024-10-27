@@ -12,6 +12,10 @@ schematica.gui.south=Юг
 schematica.gui.west=Запад
 schematica.gui.east=Восток
 
+# gui - general - config
+schematica.gui.swapSlot.title=Слоты быстрого доступа
+schematica.gui.swapSlot.edit=Редактировать Своп Слоты...
+
 # gui - general - load
 schematica.gui.title=Выбор схемы
 schematica.gui.folderInfo=(Поместите сюда схемы)
@@ -52,8 +56,6 @@ schematica.config.category.render=Отображение
 schematica.config.category.render.tooltip=Настройки отображения.
 schematica.config.category.printer=Принтер
 schematica.config.category.printer.tooltip=Настройки принтера.
-schematica.config.category.printer.swapslots=Слоты быстрого доступа
-schematica.config.category.printer.swapslots.tooltip=Использование принтером занятых слотов.
 schematica.config.category.general=Общие
 schematica.config.category.general.tooltip=Общие настройки.
 schematica.config.category.server=Сервер
@@ -88,6 +90,8 @@ schematica.config.destroyInstantly=Мгновенное разрушение
 schematica.config.destroyInstantly.tooltip=Разрушение всех блоков, которые возможно разрушить.
 schematica.config.placeAdjacent=Соседнее размещение
 schematica.config.placeAdjacent.tooltip=Блоки размещаются только при наличии других блоков около них.
+schematica.config.swapSlot=Своп Слоты
+schematica.config.swapSlot.tooltip=Использование принтером занятых слотов.
 
 # gui - config - printer - swap slots
 schematica.config.swapSlot0=Слот 1

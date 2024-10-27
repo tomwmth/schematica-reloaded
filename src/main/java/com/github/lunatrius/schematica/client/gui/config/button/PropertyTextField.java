@@ -39,7 +39,7 @@ public abstract class PropertyTextField<T extends Property<?>> extends PropertyB
         }
 
         @Override
-        public void setFocused(boolean focused) {
+        public void setFocused(final boolean focused) {
             super.setFocused(focused);
             if (!focused) {
                 this.parent.writeProperty();
@@ -47,7 +47,7 @@ public abstract class PropertyTextField<T extends Property<?>> extends PropertyB
         }
 
         @Override
-        public boolean textboxKeyTyped(char character, int keyCode) {
+        public boolean textboxKeyTyped(final char character, final int keyCode) {
             if (keyCode == Keyboard.KEY_RETURN) {
                 this.setFocused(false);
                 return false;

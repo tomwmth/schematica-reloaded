@@ -6,6 +6,10 @@ schematica.gui.on=有効
 schematica.gui.off=無効
 schematica.gui.done=完了
 
+# gui - general - config
+schematica.gui.swapSlot.title=ホットバースロット
+schematica.gui.swapSlot.edit=スワップスロットを編集…
+
 # gui - general - load
 schematica.gui.title=schematicを選択
 schematica.gui.folderInfo=(schematicファイルをここに配置)
@@ -44,8 +48,6 @@ schematica.config.category.render=描画設定
 schematica.config.category.render.tooltip=描画関連の設定です
 schematica.config.category.printer=プリントモード設定
 schematica.config.category.printer.tooltip=自動設置機能の設定です
-schematica.config.category.printer.swapslots=ホットバースロット
-schematica.config.category.printer.swapslots.tooltip=自動設置に使用してよいスロットを指定します
 schematica.config.category.general=一般設定
 schematica.config.category.general.tooltip=一般的な設定です
 schematica.config.category.server=サーバー用設定
@@ -80,6 +82,8 @@ schematica.config.destroyInstantly=同時破壊
 schematica.config.destroyInstantly.tooltip=1tickで壊すのできるすべてのブロックを破壊します
 schematica.config.placeAdjacent=隣接設置
 schematica.config.placeAdjacent.tooltip=隣にブロックがある場合のみ設置します
+schematica.config.swapSlot=スワップスロット
+schematica.config.swapSlot.tooltip=自動設置に使用してよいスロットを指定します
 
 # gui - config - printer - swap slots
 schematica.config.swapSlot0=第1スロットの使用

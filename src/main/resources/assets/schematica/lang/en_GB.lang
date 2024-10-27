@@ -12,6 +12,10 @@ schematica.gui.south=South
 schematica.gui.west=West
 schematica.gui.east=East
 
+# gui - general - config
+schematica.gui.swapSlot.title=Hotbar Slots
+schematica.gui.swapSlot.edit=Edit Swap Slots...
+
 # gui - general - load
 schematica.gui.title=Select schematic file
 schematica.gui.folderInfo=(Place schematic files here)
@@ -47,8 +51,6 @@ schematica.config.category.render=Rendering
 schematica.config.category.render.tooltip=Render related settings.
 schematica.config.category.printer=Printer
 schematica.config.category.printer.tooltip=Printer related settings.
-schematica.config.category.printer.swapslots=Hotbar Slots
-schematica.config.category.printer.swapslots.tooltip=Allow the printer to use non empty hotbar slots.
 schematica.config.category.general=General
 schematica.config.category.general.tooltip=General settings.
 schematica.config.category.server=Server
@@ -87,6 +89,8 @@ schematica.config.destroyInstantly=Destroy Instantly
 schematica.config.destroyInstantly.tooltip=Destroy all blocks that can be destroyed in one tick.
 schematica.config.placeAdjacent=Place Only Adjacent
 schematica.config.placeAdjacent.tooltip=Place blocks only if there is an adjacent block next to them.
+schematica.config.swapSlot=Swap Slots
+schematica.config.swapSlot.tooltip=Allow the printer to use non-empty hotbar slots.
 
 # gui - config - printer - swap slots
 schematica.config.swapSlot0=Allow Slot 1
@@ -167,4 +171,33 @@ schematica.command.download.downloadFail=Download failed.
 # commands - replace
 
 # messages
-schematica.message.togglePrinter=Printer: %s
+schematica.message.togglePrinter=Printer: %sschematica.gui.format=Format: %s
+schematica.gui.unload=Unload
+schematica.gui.below=All below
+schematica.gui.materialavailable=Available
+schematica.gui.materialmissing=Missing
+schematica.config.placeDistance=Placement Distance
+schematica.config.placeDistance.tooltip=Maximum placement distance.
+schematica.config.playerQuota=Player Quota
+schematica.config.playerQuota.tooltip=Amount of storage provided per-player for schematics on the server.
+schematica.config.changeState=Change State
+schematica.config.changeState.tooltip=Printer will interact with blocks to fix their state when necessary.
+schematica.config.changeStateTimeout=Change State Timeout
+schematica.config.changeStateTimeout.tooltip=Timeout before performing another state change on a single block.
+schematica.config.arrowKeyMove=Arrow Key Move
+schematica.config.arrowKeyMove.tooltip=Pressing the arrow keys will move the currently loaded schematic.
+schematica.config.persistSchematic=Persist Schematic
+schematica.config.persistSchematic.tooltip=Disconnecting from a server will not reset the loaded schematic.
+schematica.key.pickBlock=Pick Block
+schematica.command.save.unknownFormat=Unknown format "%s".
+schematica.command.config.usage=/schematicaConfig
+schematica.command.replace.usage=/schematicaReplace <original> <replacement>
+schematica.command.replace.noSchematic=You don't have a schematic loaded.
+schematica.command.replace.success=Replaced %s blocks.
+schematica.message.invalidBlock="%s" does not exist.
+schematica.message.invalidProperty="%s" is not a valid property.
+schematica.message.invalidPropertyForBlock="%s" is not a valid property for "%s".
+schematica.format.classic=Classic
+schematica.format.alpha=Alpha (standard)
+schematica.format.structure=Structure block
+schematica.format.invalid=Invalid

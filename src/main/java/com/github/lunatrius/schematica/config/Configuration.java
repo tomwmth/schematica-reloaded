@@ -87,7 +87,7 @@ public final class Configuration {
         public final BooleanProperty changeState = new BooleanProperty(Names.Config.CHANGE_STATE, true);
         public final IntegerProperty changeStateTimeout = new IntegerProperty(Names.Config.CHANGE_STATE_TIMEOUT, 5, 0, 50, " ticks");
 
-        public final SwapSlotsProperty swapSlots = new SwapSlotsProperty(Names.Config.SWAP_SLOT, new boolean[]{
+        public final SwapSlotsProperty swapSlots = new SwapSlotsProperty(Names.Config.SWAP_SLOTS, new boolean[]{
                 false, false, false, false, false, true, true, true, true
         });
 
