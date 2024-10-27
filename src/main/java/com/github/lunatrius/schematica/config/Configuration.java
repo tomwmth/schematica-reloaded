@@ -56,8 +56,8 @@ public final class Configuration {
         public final BooleanProperty highlight = new BooleanProperty(Names.Config.HIGHLIGHT, true);
         public final BooleanProperty highlightAir = new BooleanProperty(Names.Config.HIGHLIGHT_AIR, true);
 
-        public final BooleanProperty enableAlpha = new BooleanProperty(Names.Config.ALPHA_ENABLED, true);
-        public final DoubleProperty alphaModifier = new DoubleProperty(Names.Config.ALPHA, 0.5D, 0.1D, 1.0D, 1);
+        public final BooleanProperty enableAlpha = new BooleanProperty(Names.Config.ALPHA_ENABLED, false);
+        public final DoubleProperty alphaModifier = new DoubleProperty(Names.Config.ALPHA, 1.0D, 0.1D, 1.0D, 1);
 
         public final DoubleProperty blockDelta = new DoubleProperty(Names.Config.BLOCK_DELTA, 0.005D, 0.0D, 0.2D, 3);
         public final IntegerProperty renderDistance = new IntegerProperty(Names.Config.RENDER_DISTANCE, 8, 2, 16, " chunks");
