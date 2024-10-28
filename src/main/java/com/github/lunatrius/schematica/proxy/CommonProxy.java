@@ -45,6 +45,7 @@ public abstract class CommonProxy {
 
     public void preInit(final FMLPreInitializationEvent event) {
         Reference.logger = event.getModLog();
+        this.createFolders();
         ConfigurationManager.init(event.getSuggestedConfigurationFile());
     }
 
@@ -62,18 +63,6 @@ public abstract class CommonProxy {
         event.registerServerCommand(new CommandSchematicaSave());
         event.registerServerCommand(new CommandSchematicaList());
         event.registerServerCommand(new CommandSchematicaRemove());
-    }
-
-    public void createFolders() {
-        final Path schematicDir = Configuration.general.getSchematicDirectory();
-        if (Files.notExists(schematicDir)) {
-            try {
-                Files.createDirectories(schematicDir);
-            }
-            catch (IOException ex) {
-                Reference.logger.warn("Could not create schematic directory [{}]", schematicDir.toAbsolutePath(), ex);
-            }
-        }
     }
 
     public abstract File getDataDirectory();
@@ -208,4 +197,16 @@ public abstract class CommonProxy {
     public abstract boolean isPlayerQuotaExceeded(EntityPlayer player);
 
     public abstract File getPlayerSchematicDirectory(EntityPlayer player, boolean privateDirectory);
+
+    private void createFolders() {
+        final Path schematicDir = Configuration.general.getSchematicDirectory();
+        if (Files.notExists(schematicDir)) {
+            try {
+                Files.createDirectories(schematicDir);
+            }
+            catch (IOException ex) {
+                Reference.logger.warn("Could not create schematic directory [{}]", schematicDir.toAbsolutePath(), ex);
+            }
+        }
+    }
 }
