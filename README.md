@@ -6,6 +6,9 @@ A fork of Schematica for 1.8.9 to bring it up to speed with modern requirements.
 
 > Because not everyone should have to use a client
 
+## Download
+Releases are available on [Modrinth](https://modrinth.com/mod/schematica).
+
 ## Ethos
 This fork aims to bridge the gap between the original mod and the versions often found built into modern clients.
 
