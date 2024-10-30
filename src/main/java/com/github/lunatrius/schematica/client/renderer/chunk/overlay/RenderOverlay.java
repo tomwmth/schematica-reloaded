@@ -5,6 +5,7 @@ import com.github.lunatrius.core.client.renderer.GeometryTessellator;
 import com.github.lunatrius.schematica.client.renderer.chunk.CompiledOverlay;
 import com.github.lunatrius.schematica.client.world.SchematicWorld;
 import com.github.lunatrius.schematica.config.Configuration;
+import com.github.lunatrius.schematica.handler.client.EspHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -24,7 +25,7 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 public class RenderOverlay extends RenderChunk {
-    private static enum BlockType {
+    public enum BlockType {
         /** Purple - a block that is present in the world but not the schematic */
         EXTRA_BLOCK(0xBF00BF),
         /** Red - a mismatch between the block in the world and the schematic */
@@ -36,7 +37,7 @@ public class RenderOverlay extends RenderChunk {
 
         public final int color;
 
-        private BlockType(int color) {
+        BlockType(int color) {
             this.color = color;
         }
     }
@@ -134,6 +135,10 @@ public class RenderOverlay extends RenderChunk {
                     } else if (!isSchAirBlock) {
                         types[secX][secY][secZ] = BlockType.MISSING_BLOCK;
                     }
+                }
+
+                if (types[secX][secY][secZ] != null) {
+                    EspHandler.INSTANCE.add(mcPos.getImmutable(), types[secX][secY][secZ]);
                 }
             }
 

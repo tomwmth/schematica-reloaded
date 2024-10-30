@@ -62,6 +62,9 @@ public final class Configuration {
         public final DoubleProperty blockDelta = new DoubleProperty(Names.Config.BLOCK_DELTA, 0.005D, 0.0D, 0.2D, 3);
         public final IntegerProperty renderDistance = new IntegerProperty(Names.Config.RENDER_DISTANCE, 8, 2, 16, " chunks");
 
+        public final BooleanProperty esp = new BooleanProperty(Names.Config.ESP, false);
+        public final IntegerProperty espLimit = new IntegerProperty(Names.Config.ESP_LIMIT, 2000, 1, 5000, " blocks");
+
         private Rendering() {
             registerRendering(this.highlight);
             registerRendering(this.highlightAir);
@@ -71,6 +74,9 @@ public final class Configuration {
 
             registerRendering(this.blockDelta);
             registerRendering(this.renderDistance);
+
+            registerRendering(this.esp);
+            registerRendering(this.espLimit);
         }
     }
 

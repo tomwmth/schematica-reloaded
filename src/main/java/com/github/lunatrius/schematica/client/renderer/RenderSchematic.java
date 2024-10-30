@@ -16,6 +16,7 @@ import com.github.lunatrius.schematica.client.renderer.chunk.proxy.SchematicRend
 import com.github.lunatrius.schematica.client.renderer.shader.ShaderProgram;
 import com.github.lunatrius.schematica.client.world.SchematicWorld;
 import com.github.lunatrius.schematica.config.Configuration;
+import com.github.lunatrius.schematica.handler.client.EspHandler;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -179,6 +180,8 @@ public class RenderSchematic extends RenderGlobal {
         if (this.world != null) {
             this.world.removeWorldAccess(this);
         }
+
+        EspHandler.INSTANCE.refresh();
 
         this.frustumUpdatePosX = Double.MIN_VALUE;
         this.frustumUpdatePosY = Double.MIN_VALUE;
@@ -386,6 +389,7 @@ public class RenderSchematic extends RenderGlobal {
     }
 
     public void refresh() {
+        EspHandler.INSTANCE.refresh();
         loadRenderers();
     }
 

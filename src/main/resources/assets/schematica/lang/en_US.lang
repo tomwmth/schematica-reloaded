@@ -80,6 +80,10 @@ schematica.config.blockDelta=Block Delta
 schematica.config.blockDelta.tooltip=Delta value used for highlighting (if you experience z-fighting increase this).
 schematica.config.renderDistance=Render Distance
 schematica.config.renderDistance.tooltip=Schematic render distance.
+schematica.config.esp=ESP
+schematica.config.esp.tooltip=Draw tracers to incorrect or missing blocks in the current schematic.
+schematica.config.espLimit=ESP Limit
+schematica.config.espLimit.tooltip=The maximum number of blocks that can be traced at one time.
 
 # gui - config - printer
 schematica.config.placeDelay=Placement Delay

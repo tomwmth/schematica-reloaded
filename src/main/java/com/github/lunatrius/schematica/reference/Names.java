@@ -45,6 +45,8 @@ public final class Names {
         public static final String CHANGE_STATE_TIMEOUT = "changeStateTimeout";
         public static final String ARROW_KEY_MOVE = "arrowKeyMove";
         public static final String PERSIST_SCHEMATIC = "persistSchematic";
+        public static final String ESP = "esp";
+        public static final String ESP_LIMIT = "espLimit";
 
         public static final String LANG_PREFIX = Reference.MOD_ID + ".config";
     }
