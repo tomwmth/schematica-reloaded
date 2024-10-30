@@ -12,6 +12,7 @@ import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.github.lunatrius.schematica.reference.Names;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.*;
@@ -114,14 +115,14 @@ public class InputHandler {
                 this.handleArrowKey(Keyboard.getEventKey(), facing, sneaking, schematic);
             }
 
-            // TODO: fix schematic pick block
-//            if (this.minecraft.gameSettings.keyBindPickBlock.isPressed() &&
-//                    (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
-//                final SchematicWorld schematic = ClientProxy.schematic;
-//                if (schematic != null && schematic.isRendering) {
-//                    pickBlock(schematic, ClientProxy.objectMouseOver);
-//                }
-//            }
+            if (this.minecraft.gameSettings.keyBindPickBlock.isKeyDown() && GuiScreen.isShiftKeyDown()) {
+                if (schematic != null && schematic.isRendering) {
+                    final boolean success = pickBlock(schematic, ClientProxy.objectMouseOver);
+                    if (success) {
+                        this.minecraft.gameSettings.keyBindPickBlock.isPressed();
+                    }
+                }
+            }
         }
     }
 
@@ -151,25 +152,17 @@ public class InputHandler {
 
     private boolean pickBlock(final SchematicWorld schematic, final MovingObjectPosition objectMouseOver) {
         // Minecraft.func_147112_ai
-        if (objectMouseOver == null) {
-            return false;
+        if (objectMouseOver != null && objectMouseOver.typeOfHit != MovingObjectPosition.MovingObjectType.MISS) {
+            final EntityPlayerSP player = this.minecraft.thePlayer;
+            if (ForgeHooks.onPickBlock(objectMouseOver, player, schematic)) {
+                if (player.capabilities.isCreativeMode) {
+                    // 9 needs to be changed back to 10 if targeting a version with offhand
+                    final int slot = player.inventoryContainer.inventorySlots.size() - 9 + player.inventory.currentItem;
+                    this.minecraft.playerController.sendSlotPacket(player.inventory.getStackInSlot(player.inventory.currentItem), slot);
+                    return true;
+                }
+            }
         }
-
-        if (objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.MISS) {
-            return false;
-        }
-
-        final EntityPlayerSP player = this.minecraft.thePlayer;
-        if (!ForgeHooks.onPickBlock(objectMouseOver, player, schematic)) {
-            return true;
-        }
-
-        if (player.capabilities.isCreativeMode) {
-            final int slot = player.inventoryContainer.inventorySlots.size() - 10 + player.inventory.currentItem;
-            this.minecraft.playerController.sendSlotPacket(player.inventory.getStackInSlot(player.inventory.currentItem), slot);
-            return true;
-        }
-
         return false;
     }
 }
